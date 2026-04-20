@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-primary: #1B3A5C;   /* Azul oscuro industrial */
+  --color-brand-secondary: #4A5568; /* Gris acero */
+  --color-brand-accent: #E67E22;    /* Naranja seguridad */
+  --color-brand-success: #27AE60;   /* Verde */
+  --color-brand-progress: #3498DB;  /* Azul medio */
+  --color-brand-locked: #BDC3C7;    /* Gris claro */
+  --color-brand-alert: #F39C12;     /* Amarillo */
+  --color-brand-error: #E74C3C;     /* Rojo */
+  --color-brand-bg: #F7F9FC;        /* Gris muy claro */
+}
+
+@layer base {
+  body {
+    @apply bg-brand-bg text-brand-secondary font-sans;
+  }
+}
+
+@layer components {
+  .sidebar-gradient {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F1F4F8 100%);
+  }
+  
+  .header-shadow {
+    box-shadow: 0 2px 4px rgba(27, 58, 92, 0.1);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #CBD5E0;
+    border-radius: 10px;
+  }
+}
+
+.prose {
+  max-width: 800px;
+}
