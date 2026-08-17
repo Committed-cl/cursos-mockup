@@ -13,7 +13,7 @@ import { motion } from 'motion/react';
 import { COURSE_SECTIONS, SLIDES } from '../data/courseContent';
 import { MODULE_QUIZZES } from '../data/quizData';
 import { useProgress } from '../lib/progress';
-import { isSlideUnlocked, isQuizUnlocked, isFinalExamUnlocked } from '../lib/courseFlow';
+import { isSlideUnlocked, isQuizUnlocked, isFinalExamUnlocked, courseProgressPercent } from '../lib/courseFlow';
 
 // Progreso de ejemplo de la demo (35%): sin una lámina o quiz específico en la URL
 // (p. ej. en la vista general del curso), se muestra este punto como "actual".
@@ -25,6 +25,7 @@ export default function CourseSidebar() {
   const currentSlideId = slideId ? parseInt(slideId) : quizId ? 0 : DEFAULT_CURRENT_SLIDE_ID;
   const progress = useProgress();
   const { isSlideRead, isQuizPassed } = progress;
+  const progressPercent = courseProgressPercent(progress);
 
   const currentSection = COURSE_SECTIONS.find(
     (s) => s.slides.includes(currentSlideId) || (!!quizId && s.quizId === quizId)
@@ -54,10 +55,10 @@ export default function CourseSidebar() {
       <div className="p-4 border-b border-slate-200 bg-slate-50/50">
         <div className="flex justify-between items-center mb-1">
           <span className="text-xs font-bold text-gray-700 uppercase tracking-tight">Progreso General</span>
-          <span className="text-xs font-bold text-brand-progress">35%</span>
+          <span className="text-xs font-bold text-brand-progress">{progressPercent}%</span>
         </div>
         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-          <div className="bg-brand-progress h-full w-[35%] transition-all duration-1000"></div>
+          <div className="bg-brand-progress h-full transition-all duration-1000" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
 

@@ -9,26 +9,29 @@ const EVENT_NAME = 'soldadura-progress-change';
 
 const DEFAULT_READ_SLIDES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const DEFAULT_PASSED_QUIZZES = ['module-1'];
+const DEFAULT_FINAL_EXAM_PASSED = false;
 
 interface StoredProgress {
   readSlides: number[];
   passedQuizzes: string[];
+  finalExamPassed: boolean;
 }
 
 function readStorage(): StoredProgress {
   if (typeof window === 'undefined') {
-    return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES };
+    return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES, finalExamPassed: DEFAULT_FINAL_EXAM_PASSED };
   }
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES };
+    if (!raw) return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES, finalExamPassed: DEFAULT_FINAL_EXAM_PASSED };
     const parsed = JSON.parse(raw);
     return {
       readSlides: Array.isArray(parsed.readSlides) ? parsed.readSlides : DEFAULT_READ_SLIDES,
-      passedQuizzes: Array.isArray(parsed.passedQuizzes) ? parsed.passedQuizzes : DEFAULT_PASSED_QUIZZES
+      passedQuizzes: Array.isArray(parsed.passedQuizzes) ? parsed.passedQuizzes : DEFAULT_PASSED_QUIZZES,
+      finalExamPassed: typeof parsed.finalExamPassed === 'boolean' ? parsed.finalExamPassed : DEFAULT_FINAL_EXAM_PASSED
     };
   } catch {
-    return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES };
+    return { readSlides: DEFAULT_READ_SLIDES, passedQuizzes: DEFAULT_PASSED_QUIZZES, finalExamPassed: DEFAULT_FINAL_EXAM_PASSED };
   }
 }
 
@@ -37,12 +40,12 @@ function writeStorage(data: StoredProgress) {
   window.dispatchEvent(new Event(EVENT_NAME));
 }
 
-let cached: { readSlides: Set<number>; passedQuizzes: Set<string> } | null = null;
+let cached: { readSlides: Set<number>; passedQuizzes: Set<string>; finalExamPassed: boolean } | null = null;
 
 function getSnapshot() {
   if (!cached) {
     const stored = readStorage();
-    cached = { readSlides: new Set(stored.readSlides), passedQuizzes: new Set(stored.passedQuizzes) };
+    cached = { readSlides: new Set(stored.readSlides), passedQuizzes: new Set(stored.passedQuizzes), finalExamPassed: stored.finalExamPassed };
   }
   return cached;
 }
@@ -72,10 +75,17 @@ export function markQuizPassed(quizId: string) {
   writeStorage({ ...stored, passedQuizzes: [...stored.passedQuizzes, quizId] });
 }
 
+export function markFinalExamPassed() {
+  const stored = readStorage();
+  if (stored.finalExamPassed) return;
+  writeStorage({ ...stored, finalExamPassed: true });
+}
+
 export function useProgress() {
   const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   return {
     isSlideRead: (slideId: number) => snapshot.readSlides.has(slideId),
-    isQuizPassed: (quizId: string) => snapshot.passedQuizzes.has(quizId)
+    isQuizPassed: (quizId: string) => snapshot.passedQuizzes.has(quizId),
+    isFinalExamPassed: () => snapshot.finalExamPassed
   };
 }

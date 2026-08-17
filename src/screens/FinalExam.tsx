@@ -4,7 +4,7 @@ import { Award, AlertCircle, PlayCircle, ArrowRight, Clock, ShieldCheck, CheckCi
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { FINAL_EXAM_QUESTIONS, FINAL_EXAM_PASS_COUNT } from '../data/quizData';
-import { useProgress } from '../lib/progress';
+import { useProgress, markFinalExamPassed } from '../lib/progress';
 import { isFinalExamUnlocked, firstIncompleteRoute } from '../lib/courseFlow';
 
 export default function FinalExam() {
@@ -241,7 +241,10 @@ export default function FinalExam() {
                         Tu certificado de calificación técnica se generará a continuación.
                       </p>
                       <button
-                        onClick={() => navigate('/result', { state: { score, total: questions.length } })}
+                        onClick={() => {
+                          markFinalExamPassed();
+                          navigate('/result', { state: { score, total: questions.length } });
+                        }}
                         className="bg-brand-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-[#152e4a] transition-all shadow-lg flex items-center justify-center gap-2"
                       >
                         Ver mi Certificado <ArrowRight className="w-5 h-5" />

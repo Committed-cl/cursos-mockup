@@ -25,12 +25,13 @@ export const COURSE_FLOW: FlowItem[] = buildFlow();
 interface ProgressCheck {
   isSlideRead: (slideId: number) => boolean;
   isQuizPassed: (quizId: string) => boolean;
+  isFinalExamPassed: () => boolean;
 }
 
 function isItemDone(item: FlowItem, progress: ProgressCheck): boolean {
   if (item.type === 'slide') return progress.isSlideRead(item.id);
   if (item.type === 'quiz') return progress.isQuizPassed(item.id);
-  return false; // the final exam is never a "prerequisite" within this course
+  return progress.isFinalExamPassed();
 }
 
 function isIndexUnlocked(index: number, progress: ProgressCheck): boolean {
@@ -71,7 +72,10 @@ export function nextRouteAfterSlide(slideId: number): string | undefined {
   return routeForFlowItem(COURSE_FLOW[index + 1]);
 }
 
-// The first thing the student hasn't finished yet — where "Continuar" should land.
+// The first thing the student hasn't finished yet — where "Continuar" should
+// land. Once everything (including the prueba final) is done, there's
+// nothing left to continue — send them to their certificate instead of back
+// into the exam.
 export function firstIncompleteRoute(progress: ProgressCheck): string {
   for (const item of COURSE_FLOW) {
     if (!isItemDone(item, progress)) {
@@ -80,5 +84,15 @@ export function firstIncompleteRoute(progress: ProgressCheck): string {
       return '/final-exam';
     }
   }
-  return '/final-exam';
+  return '/certificates';
+}
+
+// Real "Progreso General": láminas leídas + quiz de módulo aprobados sobre
+// el total del curso. La prueba final queda fuera — es la evaluación de
+// cierre, no parte del contenido que se está "avanzando".
+const COURSE_CONTENT_ITEMS = COURSE_FLOW.filter((item) => item.type !== 'final-exam');
+
+export function courseProgressPercent(progress: ProgressCheck): number {
+  const done = COURSE_CONTENT_ITEMS.filter((item) => isItemDone(item, progress)).length;
+  return Math.round((done / COURSE_CONTENT_ITEMS.length) * 100);
 }

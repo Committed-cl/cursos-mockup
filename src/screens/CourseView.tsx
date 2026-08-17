@@ -3,12 +3,14 @@ import CourseSidebar from '../components/CourseSidebar';
 import { PlayCircle, Clock, BookOpen, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useProgress } from '../lib/progress';
-import { firstIncompleteRoute } from '../lib/courseFlow';
+import { firstIncompleteRoute, courseProgressPercent } from '../lib/courseFlow';
 
 export default function CourseView() {
   const navigate = useNavigate();
   const progress = useProgress();
   const continueRoute = firstIncompleteRoute(progress);
+  const courseFinished = continueRoute === '/certificates';
+  const progressPercent = courseProgressPercent(progress);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -87,10 +89,10 @@ export default function CourseView() {
                    <div className="flex-1 w-full">
                       <div className="flex justify-between items-end mb-2">
                          <span className="text-sm font-bold text-brand-primary">Tu avance actual</span>
-                         <span className="text-lg font-bold text-brand-progress">35%</span>
+                         <span className="text-lg font-bold text-brand-progress">{progressPercent}%</span>
                       </div>
                       <div className="h-3 w-full bg-white rounded-full border border-gray-200 overflow-hidden">
-                        <div className="h-full bg-brand-progress w-[35%] shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]"></div>
+                        <div className="h-full bg-brand-progress shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]" style={{ width: `${progressPercent}%` }}></div>
                       </div>
                       <p className="text-xs text-gray-400 mt-2">Última actividad: Hoy, 10:45 AM</p>
                    </div>
@@ -98,7 +100,7 @@ export default function CourseView() {
                      onClick={() => navigate(continueRoute)}
                      className="w-full md:w-auto bg-brand-primary hover:bg-[#152e4a] text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg shadow-brand-primary/20 flex items-center justify-center gap-3"
                    >
-                     Continuar donde lo dejé <PlayCircle className="w-5 h-5" />
+                     {courseFinished ? 'Ver mi Certificado' : 'Continuar donde lo dejé'} <PlayCircle className="w-5 h-5" />
                    </button>
                 </div>
 
