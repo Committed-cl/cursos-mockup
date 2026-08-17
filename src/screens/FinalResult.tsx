@@ -139,9 +139,7 @@ export default function FinalResult() {
 
                        <div className="flex justify-between items-end pt-8">
                           <div className="flex items-center gap-3 grayscale group-hover:grayscale-0 transition-all opacity-40 group-hover:opacity-100">
-                             <div className="font-bold text-base tracking-widest text-brand-primary">
-                                METRO<span className="text-brand-accent">GAS</span>
-                             </div>
+                             <img src={`${import.meta.env.BASE_URL}images/logos/metrogas.png`} alt="Metrogas" className="h-6 w-auto" />
                           </div>
                           <div className="p-2 border border-gray-100 rounded-lg group-hover:border-gray-200 transition-colors">
                              <QrCode className="w-12 h-12 text-gray-300 group-hover:text-gray-800 transition-colors" />

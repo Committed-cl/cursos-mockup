@@ -29,11 +29,10 @@ export default function Login() {
         </div>
 
         <div className="p-8">
-          <div className="flex justify-center mb-8 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
-             {/* Metrogas Placeholder Logo */}
-             <div className="text-center font-bold text-xl tracking-widest text-[#1B3A5C]">
-                METRO<span className="text-brand-accent">GAS</span>
-             </div>
+          <div className="flex justify-center items-center gap-4 mb-8 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+             <img src={`${import.meta.env.BASE_URL}images/logos/metrogas.png`} alt="Metrogas" className="h-8 w-auto" />
+             <div className="h-6 w-px bg-gray-200"></div>
+             <img src={`${import.meta.env.BASE_URL}images/logos/gaspex.png`} alt="Gaspex" className="h-8 w-auto" />
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">

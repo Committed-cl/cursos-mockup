@@ -22,17 +22,16 @@ export default function Layout({ children, title, breadcrumb }: LayoutProps) {
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex items-center space-x-4">
-              <div className="bg-white/10 p-2 rounded">
-                <div className="w-8 h-8 flex items-center justify-center font-bold text-xs border-2 border-white">PLAT</div>
-              </div>
-              <div className="h-6 w-px bg-white/20"></div>
-              <div 
-                className="font-bold text-lg tracking-widest text-white cursor-pointer flex items-center gap-2"
+              <div
+                className="bg-white rounded-lg px-3 py-1.5 flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate('/dashboard')}
               >
-                METRO<span className="text-brand-accent">GAS</span>
-                <span className="ml-2 text-[10px] font-semibold text-white/70 tracking-widest hidden sm:inline uppercase">Capacitación Técnica</span>
+                <img src={`${import.meta.env.BASE_URL}images/logos/metrogas.png`} alt="Metrogas" className="h-6 w-auto" />
+                <div className="h-5 w-px bg-gray-200"></div>
+                <img src={`${import.meta.env.BASE_URL}images/logos/gaspex.png`} alt="Gaspex" className="h-6 w-auto" />
               </div>
+              <div className="h-6 w-px bg-white/20 hidden sm:block"></div>
+              <span className="text-[10px] font-semibold text-white/70 tracking-widest hidden sm:inline uppercase">Capacitación Técnica</span>
             </div>
           </div>
 
