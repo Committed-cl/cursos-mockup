@@ -10,7 +10,7 @@ const courses = [
     code: "PRC-MG-026",
     progress: 35,
     status: "En progreso",
-    image: "https://picsum.photos/seed/soldadura/800/450",
+    image: `${import.meta.env.BASE_URL}images/laminas/course-cover.jpg`,
     color: "brand-progress"
   },
   {

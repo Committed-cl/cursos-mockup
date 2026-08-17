@@ -23,11 +23,10 @@ export default function CourseView() {
           <div className="flex-1 space-y-8">
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
               <div className="aspect-video bg-gray-900 relative">
-                 <img 
-                   src="https://picsum.photos/seed/soldadura/1200/600" 
-                   alt="Portada del curso" 
+                 <img
+                   src={`${import.meta.env.BASE_URL}images/laminas/course-cover.jpg`}
+                   alt="Portada del curso"
                    className="w-full h-full object-cover opacity-60"
-                   referrerPolicy="no-referrer"
                  />
                  <div className="absolute inset-0 flex items-center justify-center">
                     <button 

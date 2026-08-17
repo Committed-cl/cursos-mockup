@@ -96,12 +96,11 @@ export default function SlideView() {
               {/* Slide Content */}
               <div className="flex-1 p-8 lg:p-12 overflow-y-auto prose prose-slate max-w-none">
                  {slide.imageSeed && (
-                   <div className="bg-slate-100 w-full aspect-video rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 mb-8 overflow-hidden">
-                      <img 
-                        src={`https://picsum.photos/seed/${slide.imageSeed}/1280/720`} 
-                        alt={slide.title} 
-                        className="w-full h-full object-cover opacity-80"
-                        referrerPolicy="no-referrer"
+                   <div className="w-full aspect-video rounded-lg mb-8 overflow-hidden">
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/laminas/${slide.imageSeed}.jpg`}
+                        alt={slide.title}
+                        className="w-full h-full object-cover"
                       />
                    </div>
                  )}
