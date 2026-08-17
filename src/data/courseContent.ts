@@ -4,94 +4,89 @@ export interface SlideContent {
   sectionTitle: string;
   title: string;
   content: string[];
-  important?: string;
+  ideaClave?: string;
   imageSeed?: string;
 }
 
 export const COURSE_SECTIONS = [
   {
     id: 1,
-    title: "1. Apertura y Propósito",
+    title: "1. De qué se trata este curso",
     slides: [1, 2]
   },
   {
     id: 2,
-    title: "2. Alcance y Límites",
+    title: "2. Cuándo aplica el procedimiento",
     slides: [3, 4, 5]
   },
   {
     id: 3,
-    title: "3. Responsabilidades",
+    title: "3. Quién es responsable",
     slides: [6, 7, 8]
   },
   {
     id: 4,
-    title: "4. Marco Normativo",
-    slides: [9, 10]
+    title: "4. Marco normativo y lenguaje técnico",
+    slides: [9, 10],
+    quizId: 'module-1'
   },
   {
     id: 5,
-    title: "5. Seguridad y Salud",
-    slides: [11, 12, 13, 14, 15],
-    quizId: 'sec-5'
+    title: "5. Seguridad y salud: la base de todo",
+    slides: [11, 12, 13, 14, 15]
   },
   {
     id: 6,
-    title: "6. Equipos e Insumos",
+    title: "6. Equipos, materiales e insumos",
     slides: [16, 17, 18]
   },
   {
     id: 7,
-    title: "7. Preparación del Trabajo",
-    slides: [19, 20, 21]
+    title: "7. Preparación del trabajo (checklist diario)",
+    slides: [19, 20, 21],
+    quizId: 'module-2'
   },
   {
     id: 8,
-    title: "8. Preparación de la Unión",
-    slides: [22, 23, 24],
-    quizId: 'sec-8'
+    title: "8. Preparación de la unión",
+    slides: [22, 23, 24]
   },
   {
     id: 9,
-    title: "9. Aplicación del Decapante",
+    title: "9. Aplicación del decapante",
     slides: [25, 26]
   },
   {
     id: 10,
     title: "10. Calentamiento",
-    slides: [27, 28, 29, 30],
-    quizId: 'sec-10'
+    slides: [27, 28, 29, 30]
   },
   {
     id: 11,
-    title: "11. Aplicación de la Soldadura",
-    slides: [31, 32, 33]
+    title: "11. Aplicación de la soldadura",
+    slides: [31, 32, 33],
+    quizId: 'module-3'
   },
   {
     id: 12,
-    title: "12. Control de Calidad",
-    slides: [34, 35],
-    quizId: 'sec-12'
+    title: "12. Calidad y defectos típicos",
+    slides: [34, 35]
   },
   {
     id: 13,
-    title: "13. Enfriamiento y Cierre",
+    title: "13. Enfriamiento, limpieza y cierre",
     slides: [36, 37]
   },
   {
     id: 14,
-    title: "14. Calificación del Soldador",
-    slides: [38, 39]
+    title: "14. Calificación del soldador y registros",
+    slides: [38, 39, 40, 41],
+    quizId: 'module-4'
   },
   {
     id: 15,
-    title: "15. Registros y Trazabilidad",
-    slides: [40, 41]
-  },
-  {
-    id: 16,
-    title: "16. Cierre Técnico",
-    slides: [42, 43]
+    title: "15. Cierre del curso",
+    slides: [42]
   }
 ];
 
@@ -99,428 +94,405 @@ export const SLIDES: Record<number, SlideContent> = {
   1: {
     id: 1,
     sectionId: 1,
-    sectionTitle: "1. Apertura y Propósito",
-    title: "Título y propósito del curso",
+    sectionTitle: "1. De qué se trata este curso",
+    title: "Propósito de la capacitación",
     content: [
-      "Esta capacitación tiene por finalidad entregar al personal técnico los criterios operativos, de seguridad, calidad y control documental exigidos para ejecutar trabajos de soldadura fuerte en tuberías de cobre conforme al procedimiento PRC-MG-026, versión 43.",
-      "El foco no es solo explicar cómo se realiza una unión soldada, sino asegurar que cada trabajador comprenda:",
-      "• Cuándo aplica este procedimiento.",
-      "• Qué exigencias de seguridad deben cumplirse antes de iniciar.",
-      "• Cómo preparar correctamente la unión.",
-      "• Cómo ejecutar el calentamiento y el aporte sin generar defectos.",
-      "• Cómo verificar la calidad del trabajo realizado.",
-      "• Qué documentación y evidencias deben quedar registradas."
+      "Este curso te entrega el criterio para ejecutar soldadura fuerte en tuberías de cobre tal como lo exige el procedimiento PRC-MG-026 (versión 4) de Metrogas: con seguridad, con calidad y dejando la evidencia que corresponde.",
+      "No se trata solo de \"hacer que pegue\". Una unión bien soldada es el resultado de una secuencia: preparar, controlar riesgos, elegir el material correcto, calentar bien, aportar en el momento justo, verificar y registrar. Si un eslabón falla, falla la unión."
     ],
-    important: "La lógica de fondo es que una soldadura técnicamente aceptable depende de la correcta combinación entre preparación, control de riesgos, selección de materiales, ejecución disciplinada y trazabilidad.",
+    ideaClave: "una buena soldadura no depende solo del pulso, sino de hacer bien cada paso del procedimiento.",
     imageSeed: "training-purpose"
   },
   2: {
     id: 2,
     sectionId: 1,
-    sectionTitle: "1. Apertura y Propósito",
-    title: "Resultado esperado de la capacitación",
+    sectionTitle: "1. De qué se trata este curso",
+    title: "Qué vas a poder hacer al terminar",
     content: [
-      "Al término de esta capacitación, cada participante debe ser capaz de:",
-      "• Identificar el alcance y los límites del procedimiento.",
-      "• Reconocer las responsabilidades individuales y del contratista.",
-      "• Aplicar las condiciones de seguridad exigidas antes, durante y después del trabajo.",
-      "• Seleccionar y revisar correctamente equipos, materiales e insumos.",
-      "• Ejecutar el proceso de soldadura fuerte de manera ordenada y técnicamente correcta.",
-      "• Utilizar los checklists diarios y periódicos como herramientas reales de control.",
-      "• Comprender cuándo se exige calificación de soldador."
+      "Al finalizar el curso deberías ser capaz de:",
+      "• Reconocer cuándo aplica este procedimiento y cuándo no.",
+      "• Cumplir las condiciones de seguridad antes, durante y después del trabajo.",
+      "• Revisar y seleccionar correctamente equipos, materiales e insumos.",
+      "• Ejecutar la unión de forma ordenada y técnicamente correcta.",
+      "• Distinguir a simple vista una unión bien hecha de una defectuosa.",
+      "• Usar los checklists diario y mensual como herramienta real de control.",
+      "• Saber cuándo se exige calificación del soldador y qué registros hay que guardar."
     ],
-    important: "El estándar esperado no es solo 'conocer el procedimiento', sino poder aplicarlo en terreno con criterio, consistencia y trazabilidad.",
+    ideaClave: "el estándar no es \"saber soldar\", es \"soldar según el procedimiento y poder demostrarlo\".",
     imageSeed: "learning-outcomes"
   },
   3: {
     id: 3,
     sectionId: 2,
-    sectionTitle: "2. Alcance y Límites",
+    sectionTitle: "2. Cuándo aplica el procedimiento",
     title: "Objetivo del procedimiento",
     content: [
-      "El procedimiento establece la metodología aceptada por Metrogas en materia de seguridad y calidad para realizar trabajos de soldadura fuerte en tuberías de cobre.",
-      "Esto significa que el documento define:",
-      "• El marco técnico mínimo para ejecutar la actividad.",
-      "• Las condiciones de seguridad obligatorias.",
-      "• La secuencia operativa recomendada.",
-      "• Los criterios de control de calidad.",
-      "• Las exigencias de documentación y verificación asociadas al proceso."
+      "El procedimiento fija la metodología aceptada por Metrogas, en seguridad y calidad, para ejecutar trabajos de soldadura fuerte en cañerías de cobre. En la práctica funciona como el estándar común: todos —personal propio y contratistas— ejecutan de la misma forma."
     ],
-    important: "En la práctica, el procedimiento opera como estándar de referencia para asegurar uniformidad de ejecución entre personal propio y contratistas.",
+    ideaClave: "el procedimiento es el estándar de referencia; no es opcional ni queda al criterio de cada uno.",
     imageSeed: "procedure-objective"
   },
   4: {
     id: 4,
     sectionId: 2,
-    sectionTitle: "2. Alcance y Límites",
-    title: "Alcance técnico de aplicación",
+    sectionTitle: "2. Cuándo aplica el procedimiento",
+    title: "Dónde aplica",
     content: [
       "El procedimiento aplica a todas las soldaduras fuertes realizadas en cañerías de cobre que operen con presiones de hasta 1,4 bar.",
-      "Además, debe ser aplicado por:",
-      "• Personal propio de Metrogas.",
-      "• Contratistas o subcontratistas que cuenten con la acreditación correspondiente para este tipo de trabajo."
+      "Debe aplicarlo tanto el personal propio de Metrogas como los contratistas y subcontratistas que cuenten con su acreditación para este tipo de trabajo."
     ],
-    important: "La aplicación del procedimiento no queda entregada a criterio del ejecutante. Si la actividad corresponde al alcance definido, el procedimiento debe aplicarse.",
+    ideaClave: "si el trabajo es soldadura fuerte en cobre hasta 1,4 bar, este procedimiento se aplica siempre.",
     imageSeed: "technical-scope"
   },
   5: {
     id: 5,
     sectionId: 2,
-    sectionTitle: "2. Alcance y Límites",
-    title: "Casos excluidos del alcance",
+    sectionTitle: "2. Cuándo aplica el procedimiento",
+    title: "Qué queda fuera del alcance",
     content: [
-      "Quedan fuera del alcance algunas situaciones específicas:",
-      "• Uniones de tapones para arranques de futuros artefactos, donde se utiliza soldadura estaño-plomo.",
-      "• Situaciones aledañas a uniones de estaño donde no sea factible controlar el incremento de temperatura."
+      "Queda fuera del alcance de este procedimiento la siguiente situación:",
+      "• Uniones de tapones para arranques de futuros artefactos: en ese caso se usa tapatornillo o soldadura estaño-plomo para facilitar la conexión posterior del nuevo artefacto."
     ],
-    important: "No toda unión en cobre debe resolverse automáticamente con soldadura fuerte. Primero debe verificarse si el caso está cubierto por el procedimiento.",
+    ideaClave: "no toda unión en cobre se resuelve con soldadura fuerte; primero verifica si el caso está cubierto por el procedimiento.",
     imageSeed: "excluded-cases"
   },
   6: {
     id: 6,
     sectionId: 3,
-    sectionTitle: "3. Responsabilidades",
-    title: "Responsabilidades de aplicación",
+    sectionTitle: "3. Quién es responsable",
+    title: "Responsables de aplicar el procedimiento",
     content: [
-      "Son responsables de aplicar el procedimiento todas las personas que ejecuten las actividades descritas en él.",
-      "Esto implica responsabilidad directa sobre:",
-      "• Conocimiento del procedimiento.",
-      "• Cumplimiento efectivo en terreno.",
-      "• Correcta ejecución técnica.",
-      "• Observancia de las medidas de seguridad y control definidas."
+      "Son responsables de aplicarlo todas las personas que ejecutan las actividades descritas en él —personal propio de Metrogas y personal de contratistas o subcontratistas—, siempre que cuenten con su acreditación.",
+      "Esto implica responsabilidad directa sobre conocer el procedimiento, cumplirlo en terreno, ejecutar bien la técnica y respetar las medidas de seguridad y control."
     ],
-    important: "El procedimiento no debe entenderse como material de consulta optativa, sino como estándar operativo exigible.",
+    ideaClave: "el que ejecuta responde por hacerlo según el procedimiento, no según su costumbre.",
     imageSeed: "responsibilities"
   },
   7: {
     id: 7,
     sectionId: 3,
-    sectionTitle: "3. Responsabilidades",
+    sectionTitle: "3. Quién es responsable",
     title: "Responsabilidad del contratista",
     content: [
-      "El contratista debe velar por la aplicación del procedimiento brindando las facilidades y supervisión necesarias.",
-      "Además, debe realizar a su costo las capacitaciones necesarias para sus trabajadores y subcontratistas.",
-      "La presencia de personal de Metrogas en el lugar no exime al contratista de su responsabilidad."
+      "El contratista debe velar por que el procedimiento se aplique entre sus colaboradores y adoptar las medidas necesarias para su implementación y cumplimiento. Además, debe capacitar a su costo a sus trabajadores y a sus subcontratistas cuando corresponda.",
+      "Un punto que no admite confusión: que haya personal de Metrogas presente en el lugar no exime al contratista de su responsabilidad."
     ],
-    important: "La capacitación no reemplaza el deber de control de la jefatura; lo refuerza.",
+    ideaClave: "la responsabilidad del contratista sobre su gente no se traspasa por el solo hecho de que Metrogas esté mirando.",
     imageSeed: "contractor-resp"
   },
   8: {
     id: 8,
     sectionId: 3,
-    sectionTitle: "3. Responsabilidades",
-    title: "Rol de control en terreno",
+    sectionTitle: "3. Quién es responsable",
+    title: "Control en terreno",
     content: [
-      "• El contratista tiene responsabilidad de cumplimiento directo.",
-      "• El GIO es el encargado de exigir el cumplimiento en terreno.",
-      "• Todo personal interno de Metrogas que realice soldaduras también debe cumplirlo.",
-      "Esto instala una lógica de control cruzado: el ejecutante cumple, el supervisor verifica y la organización sostiene condiciones seguras."
+      "En términos operativos, el procedimiento distribuye el control así:",
+      "• El ejecutante (personal propio de Metrogas o de contratistas y subcontratistas acreditados) cumple y ejecuta correctamente el procedimiento.",
+      "• El contratista vela por su aplicación y adopta las medidas de control necesarias en terreno, sin que la presencia de Metrogas lo exima.",
+      "• El encargado de seguridad de la empresa que ejecuta los trabajos controla la inspección y mantención de los equipos.",
+      "Y en toda actividad, en todo momento, debe velarse por el cumplimiento de los cinco principios básicos de Seguridad y Salud."
     ],
+    ideaClave: "cada quien tiene su parte del control: el que suelda, el contratista y el encargado de seguridad.",
     imageSeed: "field-control"
   },
   9: {
     id: 9,
     sectionId: 4,
-    sectionTitle: "4. Marco Normativo",
-    title: "Referencias normativas clave",
+    sectionTitle: "4. Marco normativo y lenguaje técnico",
+    title: "En qué se respalda el procedimiento",
     content: [
-      "Las actividades deben ejecutarse conforme a:",
-      "• DS N°66/2007 sobre instalaciones interiores y medidores de gas.",
-      "• DS N°20/2008, que modifica el DS N°66.",
-      "• NCh 1466.Of78 sobre prevención de riesgos en trabajos de corte y soldadura.",
-      "• ASME B31.8 y ASME BPVC-IX."
+      "Las actividades deben ejecutarse conforme a la legislación, reglamentación y normas técnicas vigentes. El procedimiento cita, entre otras:",
+      "• NCh 1466.Of78: \"Prevención de riesgo en los trabajos de corte y soldaduras con gas – Aspectos Generales\".",
+      "• Norma ASME B31.8, edición 2007.",
+      "• Norma ASME BPVC-IX 2001.",
+      "• \"Instalaciones de Gas Natural\", Procobre, 2004.",
+      "• DS N° 298/2005, Reglamento para la certificación de productos eléctricos y combustibles.",
+      "• PE.00039.GN-SP.CL, Trabajos en altura.",
+      "• PE.00101.GN-SP.CL, Trabajo en espacios confinados.",
+      "• \"Bases técnicas para la aplicación del sistema de gestión preventivo para contratistas y subcontratistas (Ley N° 20.123)\" y \"Reglamento especial de prevención de riesgos para contratistas y subcontratistas\"."
     ],
-    important: "La soldadura fuerte no es solo una práctica de oficio; es una actividad regulada por marcos legales y técnicos estrictos.",
+    ideaClave: "la soldadura fuerte no es un oficio libre; es una actividad regulada con respaldo normativo.",
     imageSeed: "norms"
   },
   10: {
     id: 10,
     sectionId: 4,
-    sectionTitle: "4. Marco Normativo",
-    title: "Definiciones que el equipo debe dominar",
+    sectionTitle: "4. Marco normativo y lenguaje técnico",
+    title: "Definiciones que debes manejar",
     content: [
-      "• Soldadura fuerte: Punto de fusión del metal de aporte es al menos 450 °C.",
-      "• AST: Análisis de seguridad en el trabajo.",
-      "• Red interior de gas: Tuberías desde la salida de medición hasta artefactos.",
-      "• Matriz interior: Tramo de empalme múltiple hacia arranques de medidores.",
-      "• EPP: Equipo de protección personal.",
-      "• IDS: Inspecciones documentadas de seguridad."
+      "El procedimiento, para sus propios efectos, define expresamente tres conceptos:",
+      "• AST (Análisis de Seguridad en el Trabajo): antes de iniciar la tarea, se identifican los peligros y se definen las medidas de control para ejecutarla de forma segura.",
+      "• EPP (Equipo de Protección Personal): los elementos que el trabajador usa para protegerse de los riesgos de la actividad; deben mantenerse en buen estado y libres de grasas, aceites u otros materiales combustibles.",
+      "• IDS (Inspecciones Documentadas de Seguridad): el registro formal de las verificaciones de seguridad; a la IDS se adjuntan, entre otros, el checklist diario del operador y la copia de la inspección periódica de los equipos."
     ],
+    ideaClave: "AST, EPP e IDS son el lenguaje del procedimiento; se usan para exigir cumplimiento, así que hay que manejarlos.",
     imageSeed: "definitions"
   },
   11: {
     id: 11,
     sectionId: 5,
-    sectionTitle: "5. Seguridad y Salud",
+    sectionTitle: "5. Seguridad y salud: la base de todo",
     title: "Principio general de seguridad",
     content: [
-      "Debe velarse por el cumplimiento de los principios básicos de Seguridad y Salud en todo momento.",
-      "• No iniciar trabajos si no están dadas las condiciones de seguridad.",
-      "• No improvisar frente a riesgos previsibles.",
-      "• No separar la técnica de la prevención.",
-      "• No tratar la revisión como un mero trámite documental."
+      "En todas las actividades y en todo momento debe velarse por el cumplimiento de los cinco principios básicos de Seguridad y Salud. El procedimiento se aplica conforme a la NCh 1466.Of78, cuyos artículos sobre control de riesgos, EPP, ventilación, manipulación de cilindros y señalización son de implementación obligatoria. En trabajos fuera de taller se adoptan además las medidas del punto 7.1 de esa norma."
     ],
-    important: "La seguridad debe formar parte de la ejecución misma y no ser una etapa paralela o secundaria.",
+    ideaClave: "la seguridad no es una etapa aparte; es parte de la ejecución, de principio a fin.",
     imageSeed: "safety-principle"
   },
   12: {
     id: 12,
     sectionId: 5,
-    sectionTitle: "5. Seguridad y Salud",
-    title: "EPP exigido para la actividad",
+    sectionTitle: "5. Seguridad y salud: la base de todo",
+    title: "EPP obligatorio",
     content: [
-      "Los elementos de protección deben estar limpios y libres de grasas o aceites:",
-      "• Ropa gruesa y guantes de cuero de puño largo.",
+      "Los elementos de protección personal deben mantenerse en buenas condiciones y libres de grasas, aceites u otros materiales combustibles, y deben usarse siempre, sin importar lo corto o simple que parezca el trabajo. Los elementos indicados son:",
+      "• Guantes de cuero de puño largo.",
       "• Anteojos oscuros filtrantes.",
-      "• Delantal de cuero y polainas (cuando sea necesario).",
-      "• Botín de seguridad y casco (según riesgos presentes).",
-      "• Máscara de aire en espacios confinados sin ventilación adecuada."
+      "• Delantal de cuero o, cuando sea necesario, chaqueta de cuero de manga larga.",
+      "• Polainas de cuero cuando sea necesario.",
+      "• Botín o bota de seguridad.",
+      "• Gorro de género, casco de seguridad u otro elemento protector según los riesgos presentes.",
+      "Cuando en espacios confinados no sea posible una adecuada renovación de aire, el soldador debe usar máscara de aire independiente del medio ambiente y aplicar el procedimiento de trabajo en espacios confinados. En trabajos en altura, aplica el procedimiento de altura (PE.00039)."
     ],
+    ideaClave: "el EPP se usa siempre y completo; \"es un trabajo corto\" no es excusa para no ponérselo.",
     imageSeed: "ppe"
   },
   13: {
     id: 13,
     sectionId: 5,
-    sectionTitle: "5. Seguridad y Salud",
-    title: "Condiciones del entorno antes de iniciar",
+    sectionTitle: "5. Seguridad y salud: la base de todo",
+    title: "Condiciones del entorno antes de encender",
     content: [
-      "Antes de iniciar debe verificarse:",
-      "• Ausencia de gases explosivos o materiales combustibles cercanos.",
-      "• Protección de pisos combustibles con láminas metálicas o arena.",
-      "• Disponibilidad de ventilación adecuada.",
-      "• Presencia de señalización preventiva y extintor.",
-      "• Resguardo especial cerca del medidor o zonas sensibles al calor."
+      "Antes de encender el soplete, verifica el entorno:",
+      "• Que no haya líquidos inflamables, vapores, gases explosivos ni materiales combustibles cercanos.",
+      "• Que los pisos combustibles estén cubiertos con lámina metálica, arena u otro material idóneo (se prohíbe asbesto e Internit).",
+      "• Que haya ventilación adecuada y señalización preventiva.",
+      "• Especial cuidado con el goteo de soldadura caliente.",
+      "• Resguardo reforzado al soldar cerca del medidor, para que la temperatura no dañe el empalme existente."
     ],
-    important: "Esta etapa requiere especial cuidado porque la fuente térmica puede afectar elementos adyacentes o generar ignición.",
+    ideaClave: "no se enciende el soplete hasta confirmar que el entorno tolera el calor y el trabajo; cerca del medidor, doble cuidado.",
     imageSeed: "environment"
   },
   14: {
     id: 14,
     sectionId: 5,
-    sectionTitle: "5. Seguridad y Salud",
-    title: "Ventilación, humos y protección respiratoria",
+    sectionTitle: "5. Seguridad y salud: la base de todo",
+    title: "Humos, ventilación y protección respiratoria",
     content: [
-      "Los materiales de aporte y fundentes pueden producir humos perjudiciales al sobrecalentarse.",
-      "• Realizar el proceso en áreas bien ventiladas.",
-      "• Evitar la inhalación de humos.",
-      "• Atención especial a recubrimientos que contengan cadmio o fluoruros.",
-      "• Usar ventiladores o máscara de aire si la renovación no es posible."
+      "Los materiales de aporte y los fundentes, al sobrecalentarse, generan humos que pueden ser perjudiciales para la salud, sobre todo por recubrimientos, tintas, cadmio y fluoruros. Por eso:",
+      "• Trabaja en áreas bien ventiladas y evita inhalar los humos.",
+      "• Usa ventiladores para sacar las emanaciones del lugar, o máscara de aire independiente si no puedes asegurar renovación de aire.",
+      "• Limpia bien los metales base: un contaminante desconocido puede descomponer rápido el fundente y aumentar las emanaciones.",
+      "• Usa fundente suficiente y calienta el metal base de forma profusa y uniforme, no el metal de aporte.",
+      "• Con aportes que contengan cadmio, extrema el cuidado y respeta la Ficha de Datos de Seguridad y la etiqueta de advertencia."
     ],
-    important: "Muchas fallas de seguridad surgen por subestimar el riesgo respiratorio frente a un trabajo aparentemente rutinario.",
+    ideaClave: "el humo de la soldadura no es inofensivo; ventila, no lo respires y no sobrecalientes el fundente.",
     imageSeed: "ventilation"
   },
   15: {
     id: 15,
     sectionId: 5,
-    sectionTitle: "5. Seguridad y Salud",
-    title: "Cilindros: almacenamiento y traslado seguro",
+    sectionTitle: "5. Seguridad y salud: la base de todo",
+    title: "Manejo y almacenamiento de cilindros",
     content: [
-      "• Almacenar en lugares secos, ventilados y con válvulas cerradas.",
-      "• Mantener separados cilindros de oxígeno de los gases combustibles.",
-      "• Separar cilindros llenos de los vacíos.",
-      "• Durante el traslado, fijarlos para evitar golpes.",
-      "• Comprarlos o reemplazarlos solo en empresas autorizadas."
+      "El control del equipo parte antes del punto de soldadura:",
+      "• Almacena los cilindros en lugares secos y bien ventilados.",
+      "• Mantén separados los de oxígeno de los de gases combustibles (con tabiques, mallas o 1 a 1,5 m de distancia).",
+      "• Separa los llenos de los vacíos y mantén siempre las válvulas cerradas.",
+      "• No los apoyes en superficies que puedan formar parte de circuitos eléctricos.",
+      "• En el traslado, fíjalos bien para evitar golpes o daños (NCh 1466, capítulo 10).",
+      "• Compra o reemplaza cilindros con carga solo en empresas autorizadas: no se permite el rellenado."
     ],
-    important: "El control del equipo comienza desde el transporte y almacenamiento, no solo en el punto de soldadura.",
+    ideaClave: "oxígeno y combustible siempre separados, válvulas cerradas y nada de rellenar cilindros.",
     imageSeed: "cylinders"
   },
   16: {
     id: 16,
     sectionId: 6,
-    sectionTitle: "6. Equipos e Insumos",
-    title: "Herramientas y equipos requeridos",
+    sectionTitle: "6. Equipos, materiales e insumos",
+    title: "Herramientas y equipos",
     content: [
-      "• Herramientas de gasfitería: cortatubos, lija, etc.",
-      "• Soplete GLP o equipo con oxígeno-propano.",
-      "• Sistema antirretroceso de llamas obligatorio para equipos con oxígeno.",
-      "• Varillas de plata o cobre-fosfóricas.",
-      "• Extintor portátil tipo ABC.",
-      "• Equipamiento general limpio y en buen estado."
+      "Como parte del equipamiento, el procedimiento señala:",
+      "• Herramientas de gasfitería (cortatubos, lija, etc.).",
+      "• Soplete simple a GLP o equipo con mezcla oxígeno–propano.",
+      "• En toda configuración que use oxígeno, sistema antirretroceso de llamas adicional al del propio equipo, en ambas líneas (oxígeno y combustible).",
+      "• Varillas de aportación de cobre-fosfórica o con aleación de plata.",
+      "• Extintor portátil de 10 kg tipo ABC.",
+      "• Todo el equipamiento limpio y en buen estado."
     ],
-    important: "El estándar no es solo 'tener herramientas', sino tenerlas adecuadas, certificadas y seguras.",
+    ideaClave: "no basta con \"tener\" el equipo; debe estar certificado, limpio, completo y con el antirretroceso cuando se usa oxígeno.",
     imageSeed: "tools"
   },
   17: {
     id: 17,
     sectionId: 6,
-    sectionTitle: "6. Equipos e Insumos",
-    title: "Material de aporte y criterio de selección",
+    sectionTitle: "6. Equipos, materiales e insumos",
+    title: "Material de aporte: cómo elegirlo según el trabajo",
     content: [
-      "• Redes interiores baja presión: Material sin % específico de plata (fusión > 450°C).",
-      "• Redes interiores media presión (hasta 1,4 bar): 15% de plata.",
-      "• Matrices interiores: 15% de plata.",
-      "La selección del material es un criterio técnico, no una decisión improvisada."
+      "El material de aporte se elige según el tipo de trabajo, no por costumbre:",
+      "• Redes interiores en baja presión: material sin porcentaje de plata específico, pero con temperatura de fusión superior a 450 °C.",
+      "• Redes interiores de cobre en media presión, hasta 1,4 bar: material con 15% de plata.",
+      "• Matrices interiores de cobre en media o baja presión, hasta 1,4 bar: material con 15% de plata.",
+      "• Extensión de empalmes en 3,8 bar: se rige por otro procedimiento específico (PGO-GI-SI-004), no por este."
     ],
+    ideaClave: "el porcentaje de plata depende del tipo de red y de la presión; elegir mal el aporte es un error de fondo.",
     imageSeed: "filler-material"
   },
   18: {
     id: 18,
     sectionId: 6,
-    sectionTitle: "6. Equipos e Insumos",
-    title: "Certificación y mantención de equipos",
+    sectionTitle: "6. Equipos, materiales e insumos",
+    title: "Certificación, mangueras y mantención",
     content: [
-      "• Todos los equipos deben contar con certificación conforme al Decreto 298.",
-      "• Mangueras con abrazaderas de compresión de fábrica (no atornilladas).",
-      "• Inspección mensual obligatoria de equipos.",
-      "• Reemplazo inmediato de mangueras o equipos con daño detectado."
+      "Todos los equipos de soldadura deben contar con certificación de seguridad conforme al Decreto 298. El procedimiento menciona expresamente: soplete a GLP; soplete para mezcla GLP y oxígeno; reguladores de GLP para cilindros de 5, 10 o 15 kg y de 45 kg; regulador para cilindros de oxígeno; arrestallamas; y mangueras con abrazaderas de compresión de fábrica (no se admiten abrazaderas atornilladas).",
+      "Sobre la mantención:",
+      "• Los equipos se inspeccionan una vez al mes en dependencias de la empresa, llenando el checklist del Anexo 2, bajo control del encargado de seguridad, con copia a la IDS.",
+      "• Las mangueras se reemplazan cada vez que se detecte un daño.",
+      "• Todo equipo con un daño que afecte la seguridad se reemplaza."
     ],
+    ideaClave: "equipo certificado, mangueras con abrazadera de fábrica y revisión mensual documentada; ante daño, se cambia, no se repara a la mala.",
     imageSeed: "certification"
   },
   19: {
     id: 19,
     sectionId: 7,
-    sectionTitle: "7. Preparación del Trabajo",
-    title: "Checklist previo de uso diario",
+    sectionTitle: "7. Preparación del trabajo (checklist diario)",
+    title: "El checklist de uso diario (Anexo 1)",
     content: [
-      "Antes de iniciar labores, se debe verificar el Anexo 1 del procedimiento.",
-      "El checklist considera cuatro grupos:",
-      "1. Condiciones del entorno.",
-      "2. Estado del equipo.",
-      "3. EPP según riesgos.",
-      "4. Procedimientos previos al encendido.",
-      "Copia del checklist debe quedar adjunta a la IDS."
+      "Antes de iniciar las labores diarias, el personal de terreno verifica el Anexo 1 \"Checklist de Seguridad, uso Diario - Operador de Equipo de Soldadura con Gas\", y una copia queda adjunta a la IDS. El checklist cubre cuatro grupos: condiciones del entorno, estado del equipo, EPP según riesgos, y procedimientos previos al encendido."
     ],
-    important: "Debe enseñarse como una rutina obligatoria de preparación, no como un documento a completar al final.",
+    ideaClave: "el checklist diario es rutina obligatoria de partida, no un papel que se completa al final.",
     imageSeed: "checklist"
   },
   20: {
     id: 20,
     sectionId: 7,
-    sectionTitle: "7. Preparación del Trabajo",
-    title: "Qué revisar en el entorno antes de encender",
+    sectionTitle: "7. Preparación del trabajo (checklist diario)",
+    title: "Revisión del entorno",
     content: [
-      "• Área libre de líquidos o vapores inflamables.",
-      "• Protección de piso combustible.",
-      "• Extintor operativo disponible.",
-      "• Zona segura para el encendido.",
-      "• Cuidado especial cerca de medidores u otros componentes existentes."
+      "Del checklist diario y del cuerpo del procedimiento, en el entorno se revisa:",
+      "• Área libre de líquidos inflamables, vapores o gases explosivos.",
+      "• Piso combustible protegido con lámina metálica o arena.",
+      "• Señalización preventiva instalada.",
+      "• Extintor ABC ≥10 kg disponible y operativo, al lado de quien suelda, antes de encender.",
+      "• Condiciones de ventilación.",
+      "• Zona segura de encendido."
     ],
-    important: "No se enciende el soplete hasta verificar que el entorno tolera térmica y operacionalmente la actividad.",
+    ideaClave: "entorno despejado, piso protegido y extintor ≥10 kg al lado antes de la primera chispa.",
     imageSeed: "environment-check"
   },
   21: {
     id: 21,
     sectionId: 7,
-    sectionTitle: "7. Preparación del Trabajo",
-    title: "Qué revisar en el equipo antes de encender",
+    sectionTitle: "7. Preparación del trabajo (checklist diario)",
+    title: "Revisión del equipo",
     content: [
-      "• Mangueras sin grietas ni fugas.",
-      "• Conexiones probadas con agua jabonosa.",
-      "• Reguladores y válvulas funcionando correctamente.",
+      "En el equipo, antes de encender, se revisa:",
+      "• Mangueras sin grietas, cortes ni fugas.",
+      "• Conexiones firmes y probadas con agua jabonosa.",
+      "• Reguladores sin fisuras y funcionando correctamente.",
+      "• Válvulas de cilindros que abren y cierran sin esfuerzo.",
       "• Arrestallamas correctamente montados.",
-      "• Chispero disponible (no usar fósforos)."
+      "• Encendedor tipo chispero disponible (no fósforos).",
+      "En equipos con oxígeno, la válvula de gas combustible se abre solo media vuelta."
     ],
-    important: "Un equipo aparentemente operativo puede ser inseguro si no se confirma su estanqueidad y condición funcional.",
+    ideaClave: "un equipo que \"parece\" bueno puede tener fuga; se confirma estanqueidad e integridad antes de encender.",
     imageSeed: "equipment-check"
   },
   22: {
     id: 22,
     sectionId: 8,
-    sectionTitle: "8. Preparación de la Unión",
-    title: "Paso 1: corte correcto del tubo",
+    sectionTitle: "8. Preparación de la unión",
+    title: "Corte a medida del tubo",
     content: [
-      "El corte debe realizarse perpendicularmente mediante cortatubo.",
-      "• Obtener un corte limpio y a escuadra.",
-      "• Reducir rebabas.",
-      "• Favorecer una capilaridad adecuada.",
-      "Un mal corte afecta la geometría y puede impedir el ingreso del material de aporte."
+      "La unión empieza por un buen corte. El tubo se corta perpendicular al eje con cortatubo: así se obtiene un corte limpio y a escuadra, con menos rebabas. Un tubo mal cortado aumenta la separación entre tubo y accesorio e impide la capilaridad."
     ],
+    ideaClave: "corte perpendicular con cortatubo; de ahí en adelante todo depende de que el tubo entre bien.",
     imageSeed: "tube-cutting"
   },
   23: {
     id: 23,
     sectionId: 8,
-    sectionTitle: "8. Preparación de la Unión",
-    title: "Paso 2: rebabas, recalibrado y limpieza",
+    sectionTitle: "8. Preparación de la unión",
+    title: "Rebabas, recalibrado y limpieza",
     content: [
-      "• Eliminar rebabas en los extremos.",
-      "• Recalibrar el tubo si presenta deformaciones.",
-      "• Limpiar y desengrasar superficie exterior del tubo e interior del accesorio.",
-      "La limpieza incluye eliminación de aceite (disolvente) y óxido (limpieza abrasiva).",
-      "El procedimiento prohíbe el abocardado para soldar por capilaridad."
+      "Después del corte:",
+      "• Elimina las rebabas de los extremos para que el tubo acople bien y no queden residuos que generen turbulencias.",
+      "• Si el extremo quedó deformado, recalíbralo con punzón y anillo calibrador.",
+      "• Limpia y desengrasa la superficie exterior del tubo y la interior del accesorio. Primero elimina aceite y grasa con disolvente desengrasante; después el óxido o el sarro con limpieza abrasiva (lija, esmeril, lima o granallado) y enjuague.",
+      "Con las piezas limpias, sigue de inmediato al paso siguiente para evitar recontaminación por polvo o aceites de las manos. Nunca se admite abocardado (abocinado) del tubo para soldar por capilaridad."
     ],
+    ideaClave: "superficies perfectamente limpias y a escuadra; sucio o abocinado no suelda por capilaridad.",
     imageSeed: "cleaning"
   },
   24: {
     id: 24,
     sectionId: 8,
-    sectionTitle: "8. Preparación de la Unión",
-    title: "Por qué la preparación determina la calidad",
+    sectionTitle: "8. Preparación de la unión",
+    title: "Por qué la preparación define la calidad",
     content: [
-      "La calidad depende primero de:",
-      "• Ajuste correcto entre piezas.",
-      "• Limpieza real de las superficies.",
-      "• Ausencia de deformaciones.",
-      "• Mantención del intersticio para la capilaridad.",
-      "Si las superficies no están preparadas, el material puede no mojar la unión."
+      "La calidad de la unión se juega antes del calor. Depende del ajuste correcto entre piezas, de la limpieza real de las superficies, de la ausencia de deformaciones y de mantener el intersticio adecuado para que opere la capilaridad. Si esto falla, el aporte no moja la unión, forma gotas o escurre por fuera sin penetrar."
     ],
-    important: "La etapa de preparación no es un preámbulo, es la base de la estanqueidad y calidad final.",
+    ideaClave: "la preparación no es el \"antes\" del trabajo; es la base de la estanqueidad y de la calidad final.",
     imageSeed: "quality-prep"
   },
   25: {
     id: 25,
     sectionId: 9,
-    sectionTitle: "9. Aplicación del Decapante",
-    title: "Función del decapante",
+    sectionTitle: "9. Aplicación del decapante",
+    title: "Para qué sirve el decapante",
     content: [
-      "Se debe aplicar una fina capa de decapante no corrosivo sobre el tubo mediante pincel.",
-      "• Proteger la superficie metálica durante el calentamiento.",
-      "• Aumentar la penetración del material de aporte.",
-      "• Favorecer la capilaridad.",
-      "El decapante no tiene por misión limpiar; las piezas deben estar limpias antes."
+      "Inmediatamente después de la limpieza, se aplica una capa fina de decapante no corrosivo sobre la superficie exterior del tubo, con pincel. El decapante protege la superficie durante el calentamiento y aumenta la penetración del material de aporte, pero no limpia: las superficies deben estar limpias antes de aplicarlo."
     ],
+    ideaClave: "el decapante protege y ayuda a penetrar, no reemplaza la limpieza previa.",
     imageSeed: "flux-function"
   },
   26: {
     id: 26,
     sectionId: 9,
-    sectionTitle: "9. Aplicación del Decapante",
-    title: "Forma correcta de aplicación",
+    sectionTitle: "9. Aplicación del decapante",
+    title: "Cómo aplicarlo correctamente",
     content: [
-      "• Insertar el tubo en el accesorio hasta el tope.",
-      "• Girar el tubo para distribuir uniformemente el decapante.",
-      "• Retirar el exceso con un trapo limpio antes del calentamiento.",
-      "El exceso de decapante puede afectar el comportamiento térmico y la limpieza final."
+      "• Aplica la capa fina apenas termines de limpiar, para evitar la reoxidación.",
+      "• Inserta el tubo en el accesorio hasta el tope.",
+      "• Gíralo a derecha e izquierda para repartir el decapante de forma uniforme.",
+      "• Antes de calentar, retira el exceso de decapante con un trapo limpio o papel absorbente."
     ],
+    ideaClave: "capa fina, tubo hasta el tope, girar para repartir y retirar el exceso antes de calentar.",
     imageSeed: "flux-application"
   },
   27: {
     id: 27,
     sectionId: 10,
     sectionTitle: "10. Calentamiento",
-    title: "Objetivo técnico del calentamiento",
+    title: "Objetivo y combustible",
     content: [
-      "Llevar la unión a la temperatura necesaria para que el metal funda y penetre por capilaridad.",
-      "• Se emplea soplete con propano u oxiacetileno.",
-      "• Con oxiacetileno, la llama debe ser ligeramente reductora (dardo fino azul).",
-      "La temperatura adecuada se nota cuando el fundente se vuelve transparente."
+      "El objetivo del calentamiento es llevar la unión a la temperatura en que el metal de aporte funde y penetra por capilaridad en el intersticio. Para ello se utiliza el soplete empleando como combustible propano; según el equipo, puede ser un soplete simple a GLP o un equipo con mezcla oxígeno–propano. Todo equipo que use oxígeno debe contar con el sistema antirretroceso de llamas en ambas líneas (oxígeno y combustible)."
     ],
+    ideaClave: "el combustible es propano (GLP); si el equipo usa oxígeno, va con antirretroceso en ambas líneas.",
     imageSeed: "heating-obj"
   },
   28: {
     id: 28,
     sectionId: 10,
     sectionTitle: "10. Calentamiento",
-    title: "Técnica correcta de calentamiento",
+    title: "Técnica de calentamiento",
     content: [
-      "• Dirigir la llama a 2 - 2,5 cm del accesorio.",
-      "• Movimiento continuo y perpendicular al eje del tubo.",
-      "• Abarcar toda la circunferencia.",
-      "• Evitar recalentamientos localizados para lograr distribución uniforme."
+      "Se calienta primero la cañería de cobre, no el accesorio ni el material de aporte. La llama se dirige a la cañería a unos 2 a 2,5 cm del accesorio y se mantiene en movimiento continuo, perpendicular al eje del tubo, para abarcar toda la circunferencia y evitar recalentamientos locales. Cuando el desoxidante adquiere un aspecto tranquilo y transparente, como si fuera agua, la cañería alcanzó la temperatura adecuada (≥450 °C); recién entonces la llama se dirige al accesorio, calentándolo de forma uniforme."
     ],
+    ideaClave: "primero la cañería, llama en movimiento a 2–2,5 cm; el desoxidante \"como agua\" avisa que llegó a temperatura.",
     imageSeed: "heating-tech"
   },
   29: {
     id: 29,
     sectionId: 10,
     sectionTitle: "10. Calentamiento",
-    title: "Cómo reconocer que la unión está lista",
+    title: "Reconocer que la unión está lista y casos especiales",
     content: [
-      "La unión está lista cuando el desoxidante presenta aspecto transparente tanto en cañería como en accesorio.",
-      "• Mover la llama alternadamente en ambos sentidos.",
-      "• Evitar sobrecalentamiento local.",
-      "• En diámetros grandes, puede requerirse soplete de varias bocas o soldar por sectores."
+      "La unión está a punto cuando el desoxidante se ve tranquilo y transparente tanto en la cañería como en el accesorio. En ese momento se mueve la llama alternadamente en ambos sentidos sobre la unión, evitando siempre el sobrecalentamiento local.",
+      "En cañerías de diámetros grandes, donde cuesta calentar toda la unión, se usa un soplete de varias bocas o se calienta y suelda por sectores hasta completar toda la circunferencia. Recuerda además que no se sueldan entre sí tuberías de cobre y de acero/acero inoxidable: para unir materialidades distintas se usa un elemento de transición o un accesorio de aleación de cobre."
     ],
+    ideaClave: "transparente en tubo y accesorio = listo; en diámetros grandes, varias bocas o por sectores.",
     imageSeed: "ready-heating"
   },
   30: {
@@ -529,180 +501,166 @@ export const SLIDES: Record<number, SlideContent> = {
     sectionTitle: "10. Calentamiento",
     title: "Riesgos por calentamiento incorrecto",
     content: [
-      "El calentamiento excesivo puede:",
-      "• Quemar el cobre.",
-      "• Volverlo frágil o poroso.",
-      "• Comprometer la calidad de la unión.",
-      "Proteger uniones cercanas (como polietileno) con paños húmedos si es necesario."
+      "El calentamiento no debe ser exagerado: se corre el riesgo de quemar el cobre y dejarlo frágil y poroso, comprometiendo la unión. Y cuando hay uniones cercanas sensibles al calor —por ejemplo transiciones cobre-polietileno— primero se enfría la parte metálica intermedia envolviéndola con un paño de algodón saturado en agua; terminada la soldadura, se enfría con abundante agua hasta confirmar que la superficie de cobre quedó fría por completo."
     ],
+    ideaClave: "de más también se arruina: sobrecalentar quema el cobre y daña las transiciones; protege con paño húmedo y enfría bien.",
     imageSeed: "overheating"
   },
   31: {
     id: 31,
     sectionId: 11,
-    sectionTitle: "11. Aplicación de la Soldadura",
-    title: "Principio de aporte por capilaridad",
+    sectionTitle: "11. Aplicación de la soldadura",
+    title: "Aporte por capilaridad",
     content: [
-      "Alcanzada la temperatura, el material debe penetrar rápidamente por capilaridad.",
-      "• La unión está llena cuando se forma un cordón uniforme alrededor del tubo.",
-      "• El operario no 'empuja' la soldadura; la capilaridad hace el trabajo.",
-      "El control del calor es lo que guía el flujo del material."
+      "Apenas alcanzada la temperatura, se aplica el metal de aporte, que penetra rápidamente por capilaridad en el intersticio entre tubo y accesorio. La unión está llena cuando se forma un cordón uniforme de soldadura alrededor del tubo, en el borde del accesorio. El operario no \"empuja\" la soldadura: genera las condiciones para que la capilaridad haga el trabajo."
     ],
+    ideaClave: "es la capilaridad la que llena la unión; tu trabajo es lograr la temperatura y la limpieza para que ocurra.",
     imageSeed: "capillarity"
   },
   32: {
     id: 32,
     sectionId: 11,
-    sectionTitle: "11. Aplicación de la Soldadura",
+    sectionTitle: "11. Aplicación de la soldadura",
     title: "Secuencia correcta de aplicación",
     content: [
-      "• Mantener alta la temperatura de la unión.",
-      "• Aproximar el hilo al borde del accesorio.",
-      "• Apartar la llama del hilo durante la aportación.",
-      "Secuencia: 1. Parte inferior, 2. Partes laterales, 3. Parte superior.",
-      "Esto asegura un llenado completo en toda la circunferencia."
+      "Durante el aporte:",
+      "• Mantén suficientemente alta la temperatura de la unión.",
+      "• Acerca el hilo o varilla al borde del accesorio.",
+      "• Aparta la llama del hilo durante la aportación.",
+      "• Sigue calentando tubo y accesorio con movimiento oscilante de la llama.",
+      "Y aplica el aporte en esta secuencia: primero en la parte inferior de la unión, luego en las laterales y finalmente en la superior. Así el aporte cubre toda la circunferencia."
     ],
+    ideaClave: "llama fuera del hilo durante el aporte y secuencia inferior → lados → superior para llenar toda la vuelta.",
     imageSeed: "brazing-sequence"
   },
   33: {
     id: 33,
     sectionId: 11,
-    sectionTitle: "11. Aplicación de la Soldadura",
+    sectionTitle: "11. Aplicación de la soldadura",
     title: "Precauciones durante la aplicación",
     content: [
-      "• En derivaciones hacia abajo, evitar recalentar el tubo para que la aleación no escurra.",
-      "• Si ocurre recalentamiento, retirar el calor y dejar solidificar antes de reanudar.",
-      "• Interrumpir el aporte al ver el cordón continuo; agregar más no mejora la calidad."
+      "Si la derivación del accesorio apunta hacia abajo, no recalientes el tubo: la aleación podría escurrir fuera del accesorio a lo largo del tubo. Si el tubo se recalienta, aleja la fuente de calor, deja solidificar la aleación y luego reanuda. Cuando la unión ya se llenó —se ve el cordón continuo alrededor de la cañería en el borde del accesorio— interrumpe el aporte: seguir agregando material no mejora la unión."
     ],
+    ideaClave: "cuando aparece el cordón continuo, para; agregar de más no suma, y en derivaciones hacia abajo, no recalientes.",
     imageSeed: "brazing-precautions"
   },
   34: {
     id: 34,
     sectionId: 12,
-    sectionTitle: "12. Control de Calidad",
-    title: "Criterios básicos de calidad",
+    sectionTitle: "12. Calidad y defectos típicos",
+    title: "Control de calidad",
     content: [
-      "Asegurar mediante control visual que los intersticios estén llenos.",
-      "Tres preguntas de control:",
-      "• ¿Penetró el material o quedó superficial?",
-      "• ¿Se observa cordón uniforme continuo?",
-      "• ¿Hay evidencia de calentamiento adecuado?",
-      "La inspección visual es parte central del control en terreno."
+      "Asegúrate, por control visual, de que los intersticios queden completamente llenos. Un control más preciso se puede hacer midiendo la longitud del hilo de soldadura consumido. En terreno conviene preguntarse: ¿penetró el material o quedó superficial?, ¿hay cordón uniforme y continuo?, ¿hubo calentamiento parejo?"
     ],
+    ideaClave: "la inspección visual del cordón es parte del trabajo; la unión se verifica, no se supone.",
     imageSeed: "quality-control"
   },
   35: {
     id: 35,
     sectionId: 12,
-    sectionTitle: "12. Control de Calidad",
-    title: "Señales de unión mal preparada o calentada",
+    sectionTitle: "12. Calidad y defectos típicos",
+    title: "Diagnóstico de defectos",
     content: [
-      "• Gotas sobre la superficie: Superficie no desoxidada o temperatura insuficiente.",
-      "• Aleación no penetra y escurre: Calentamiento insuficiente de la cañería o sobrecalentamiento del accesorio.",
-      "Estos errores deben ser diagnosticados por ejecutante y supervisor."
+      "Dos señales típicas y su causa:",
+      "• Si la aleación forma gotas sobre la superficie y no se reparte por los intersticios: las superficies no están desoxidadas (no dejan que la aleación las moje) o no están suficientemente calientes.",
+      "• Si la aleación no penetra y escurre por la superficie exterior: falta calentamiento del elemento macho (normalmente la cañería) y/o hay recalentamiento del elemento hembra (generalmente el accesorio)."
     ],
+    ideaClave: "gotas = superficie sucia o fría; escurre por fuera = faltó calor en la cañería o sobró en el accesorio.",
     imageSeed: "defects"
   },
   36: {
     id: 36,
     sectionId: 13,
-    sectionTitle: "13. Enfriamiento y Cierre",
+    sectionTitle: "13. Enfriamiento, limpieza y cierre",
     title: "Enfriamiento y limpieza final",
     content: [
-      "• Enfriar bruscamente con agua fría para ayudar a separar residuos vitrificados.",
-      "• Limpiar la zona de restos de decapante una vez fría.",
-      "La limpieza final ayuda a dejar visible la calidad de la unión y evita residuos indeseados."
+      "Las partes soldadas se pueden enfriar bruscamente con agua fría, lo que separa buena parte del polvo soldado y vitrificado. Cuando la unión ya está fría, se limpia la zona para eliminar los restos de decapante. Esta limpieza no es estética: deja ver la calidad de la unión y evita residuos indeseados."
     ],
+    ideaClave: "enfriar con agua y limpiar el decapante es parte del cierre técnico, no un adorno.",
     imageSeed: "cleaning-final"
   },
   37: {
     id: 37,
     sectionId: 13,
-    sectionTitle: "13. Enfriamiento y Cierre",
-    title: "Condiciones de cierre seguro del trabajo",
+    sectionTitle: "13. Enfriamiento, limpieza y cierre",
+    title: "Cierre seguro del trabajo",
     content: [
-      "• Reponer elementos de control de riesgo retirados.",
-      "• Verificar que no quede material en ignición.",
-      "• Sitio limpio y ordenado.",
-      "• Devolver equipo al lugar correspondiente.",
-      "El trabajo termina cuando la zona queda segura y sin fuentes de riesgo."
+      "Terminado el trabajo:",
+      "• Repón de inmediato los elementos de control de riesgo que se hayan retirado.",
+      "• Verifica que no quede material en ignición.",
+      "• Deja el sitio limpio y ordenado.",
+      "• Devuelve el equipo al lugar que corresponde."
     ],
+    ideaClave: "el trabajo termina cuando la zona queda segura, limpia y sin fuentes de riesgo, no cuando se apaga el soplete.",
     imageSeed: "safe-closing"
   },
   38: {
     id: 38,
     sectionId: 14,
-    sectionTitle: "14. Calificación del Soldador",
-    title: "Exigencias para soldaduras en matriz interior",
+    sectionTitle: "14. Calificación del soldador y registros",
+    title: "Calificación en matriz interior",
     content: [
-      "• Calificación conforme a ASME B31.8, apéndice G o ASME BPVC-IX.",
-      "• Demostrar actividad en soldadura fuerte en los últimos 6 meses.",
-      "• Si no hay actividad reciente, se requiere recalificación.",
-      "La habilidad práctica no reemplaza la exigencia formal de calificación."
+      "Para soldaduras en tramos de matriz interior, el soldador debe estar calificado conforme a la norma ASME B31.8 (2007), apéndice G, punto g; alternativamente, puede calificarse con la norma ASME BPVC-IX. Para mantener la calificación, debe demostrar que no ha dejado de realizar soldadura fuerte por un período mayor a 6 meses; si no puede demostrarlo, debe recalificarse."
     ],
+    ideaClave: "en matriz interior se exige soldador calificado, y la calificación se pierde si pasan más de 6 meses sin soldar.",
     imageSeed: "qualification"
   },
   39: {
     id: 39,
     sectionId: 14,
-    sectionTitle: "14. Calificación del Soldador",
-    title: "Exigencias para centrales térmicas",
+    sectionTitle: "14. Calificación del soldador y registros",
+    title: "Procedimiento calificado en centrales térmicas",
     content: [
-      "• Contar con un procedimiento calificado conforme a ASME BPVC-IX.",
-      "No basta con calificar al soldador; también se exige validación formal del procedimiento aplicado."
+      "Para soldaduras en tramos de red interior en proyectos de centrales térmicas, se exige contar con un procedimiento calificado conforme a la norma ASME BPVC-IX 2001 o posterior. Es decir, en ese contexto no basta con calificar al soldador: también se exige validar formalmente el procedimiento de soldadura."
     ],
+    ideaClave: "en centrales térmicas, además del soldador, el procedimiento mismo debe estar calificado.",
     imageSeed: "qualification-thermal"
   },
   40: {
     id: 40,
-    sectionId: 15,
-    sectionTitle: "15. Registros y Trazabilidad",
-    title: "Documentación que debe mantenerse",
+    sectionId: 14,
+    sectionTitle: "14. Calificación del soldador y registros",
+    title: "Registros y trazabilidad",
     content: [
-      "• Calificación del soldador.",
-      "• Procedimiento calificado (si aplica).",
-      "• Checklists mensuales de inspección de equipos.",
-      "• La trazabilidad permite demostrar documentalmente la calidad de la ejecución."
+      "Según el tipo de trabajo, hay que mantener documentación:",
+      "• Soldaduras en matriz interior: calificación del soldador.",
+      "• Soldaduras en red interior de central térmica: procedimiento calificado y registro que indique el nombre del soldador.",
+      "Además, mensualmente se completa el \"Checklist de Inspección Periódica de Equipos de Soldadura con Gas\" (Anexo 2), como parte del control del trabajo."
     ],
+    ideaClave: "ejecutar bien no basta: hay que poder demostrarlo con la calificación, el nombre del soldador y el checklist mensual.",
     imageSeed: "records"
   },
   41: {
     id: 41,
-    sectionId: 15,
-    sectionTitle: "15. Registros y Trazabilidad",
-    title: "Uso de los anexos como herramientas",
+    sectionId: 14,
+    sectionTitle: "14. Calificación del soldador y registros",
+    title: "Los anexos como herramienta de control",
     content: [
-      "Anexo 1: Checklist diario para verificar condiciones mínimas.",
-      "Anexo 2: Checklist periódico de inspección de equipos.",
-      "Estos registros son parte del control preventivo, no un 'papel adicional'."
+      "Los anexos no son papeleo: son herramientas de control preventivo.",
+      "• Anexo 1 – Checklist diario del operador: verifica las condiciones mínimas antes de iniciar cada jornada.",
+      "• Anexo 2 – Checklist periódico de equipos: controla la integridad y la mantención del sistema de soldadura a gas."
     ],
+    ideaClave: "el checklist diario y el mensual son evidencia de que el trabajo se hizo en condiciones seguras.",
     imageSeed: "annex-use"
   },
   42: {
     id: 42,
-    sectionId: 16,
-    sectionTitle: "16. Cierre Técnico",
-    title: "Mensajes críticos a retener",
+    sectionId: 15,
+    sectionTitle: "15. Cierre del curso",
+    title: "Mensajes críticos que hay que retener",
     content: [
-      "1. La soldadura fuerte es una actividad regulada.",
-      "2. Aplica por personal acreditado hasta 1,4 bar.",
-      "3. La seguridad comienza antes del encendido.",
-      "4. La preparación determina la calidad final.",
-      "5. El calentamiento se reconoce, no se improvisa.",
-      "6. La calidad se verifica visualmente."
+      "1. La soldadura fuerte es una actividad regulada, no una práctica libre de taller.",
+      "2. Aplica a cañerías de cobre hasta 1,4 bar, para personal propio y contratistas acreditados.",
+      "3. La seguridad empieza antes de encender: entorno, EPP, ventilación, equipos y cilindros.",
+      "4. La preparación de la unión —corte, limpieza, ajuste— define la calidad final.",
+      "5. Se calienta la cañería primero; el desoxidante \"como agua\" marca los ≥450 °C.",
+      "6. El combustible es propano; con oxígeno, siempre antirretroceso en ambas líneas.",
+      "7. La capilaridad llena la unión; la secuencia es inferior, lados y superior.",
+      "8. La calidad se verifica en el cordón; gotas o escurrimiento avisan qué falló.",
+      "9. El trabajo cierra con zona segura, limpia y con los registros completos.",
+      "10. Cuando corresponde, la calificación del soldador y la trazabilidad son exigencias formales."
     ],
+    ideaClave: "si retienes estos diez puntos, tienes el criterio para ejecutar según el procedimiento.",
     imageSeed: "key-messages"
-  },
-  43: {
-    id: 43,
-    sectionId: 16,
-    sectionTitle: "16. Cierre Técnico",
-    title: "Advertencias finales de la versión",
-    content: [
-      "• Validar consistencia técnica del extintor (norma exige >= 10kg).",
-      "• Eliminar comentarios editoriales antes de la versión oficial.",
-      "• Definir vigencia del material de apoyo 'Conceptos de soldadura'."
-    ],
-    imageSeed: "final-warnings"
   }
 };

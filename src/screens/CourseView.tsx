@@ -2,9 +2,13 @@ import Layout from '../components/Layout';
 import CourseSidebar from '../components/CourseSidebar';
 import { PlayCircle, Clock, BookOpen, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useProgress } from '../lib/progress';
+import { firstIncompleteRoute } from '../lib/courseFlow';
 
 export default function CourseView() {
   const navigate = useNavigate();
+  const progress = useProgress();
+  const continueRoute = firstIncompleteRoute(progress);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -37,7 +41,7 @@ export default function CourseView() {
               <div className="p-8">
                 <div className="flex flex-wrap gap-3 mb-4">
                   <span className="px-3 py-1 bg-blue-50 text-brand-progress text-[10px] font-bold uppercase tracking-widest rounded-full border border-blue-100">
-                    PRC-MG-026 v.43
+                    PRC-MG-026 v.4
                   </span>
                   <span className="px-3 py-1 bg-orange-50 text-brand-accent text-[10px] font-bold uppercase tracking-widest rounded-full border border-orange-100">
                     Certificación Obligatoria
@@ -63,7 +67,7 @@ export default function CourseView() {
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
                         <BookOpen className="w-3 h-3" /> Contenido
                       </p>
-                      <p className="font-bold text-brand-primary">43 Láminas</p>
+                      <p className="font-bold text-brand-primary">42 Láminas</p>
                    </div>
                    <div className="space-y-1">
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
@@ -90,8 +94,8 @@ export default function CourseView() {
                       </div>
                       <p className="text-xs text-gray-400 mt-2">Última actividad: Hoy, 10:45 AM</p>
                    </div>
-                   <button 
-                     onClick={() => navigate('/slide/13')}
+                   <button
+                     onClick={() => navigate(continueRoute)}
                      className="w-full md:w-auto bg-brand-primary hover:bg-[#152e4a] text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg shadow-brand-primary/20 flex items-center justify-center gap-3"
                    >
                      Continuar donde lo dejé <PlayCircle className="w-5 h-5" />
@@ -99,12 +103,15 @@ export default function CourseView() {
                 </div>
 
                 <div className="prose prose-sm prose-slate">
-                  <h3 className="font-bold text-brand-primary">Objetivos de la capacitación:</h3>
+                  <h3 className="font-bold text-brand-primary">Al finalizar el curso vas a poder:</h3>
                   <ul>
-                    <li>Uniformar los criterios técnicos para la ejecución de uniones mediante soldadura fuerte.</li>
-                    <li>Garantizar que el personal técnico domine los riesgos asociados y las medidas preventivas obligatorias.</li>
-                    <li>Asegurar la trazabilidad del proceso mediante el correcto llenado de registros corporativos.</li>
-                    <li>Verificar la competencia técnica mínima necesaria para desempeñarse como soldador calificado.</li>
+                    <li>Reconocer cuándo aplica este procedimiento y cuándo no.</li>
+                    <li>Cumplir las condiciones de seguridad antes, durante y después del trabajo.</li>
+                    <li>Revisar y seleccionar correctamente equipos, materiales e insumos.</li>
+                    <li>Ejecutar la unión de forma ordenada y técnicamente correcta.</li>
+                    <li>Distinguir a simple vista una unión bien hecha de una defectuosa.</li>
+                    <li>Usar los checklists diario y mensual como herramienta real de control.</li>
+                    <li>Saber cuándo se exige calificación del soldador y qué registros hay que guardar.</li>
                   </ul>
                 </div>
               </div>

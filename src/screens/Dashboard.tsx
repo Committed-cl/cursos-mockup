@@ -101,7 +101,7 @@ export default function Dashboard() {
                       <Clock className="w-3.5 h-3.5" /> 4h total
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <BookOpen className="w-3.5 h-3.5" /> 16 módulos
+                      <BookOpen className="w-3.5 h-3.5" /> 15 secciones
                     </div>
                   </div>
 

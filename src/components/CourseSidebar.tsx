@@ -1,20 +1,53 @@
-import { 
-  CheckCircle2, 
-  Circle, 
-  Lock, 
-  ChevronDown, 
-  Play, 
-  FileText, 
-  HelpCircle 
+import {
+  CheckCircle2,
+  Circle,
+  Lock,
+  ChevronDown,
+  Play,
+  FileText,
+  HelpCircle
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { COURSE_SECTIONS, SLIDES } from '../data/courseContent';
+import { MODULE_QUIZZES } from '../data/quizData';
+import { useProgress } from '../lib/progress';
+import { isSlideUnlocked, isQuizUnlocked, isFinalExamUnlocked } from '../lib/courseFlow';
+
+// Progreso de ejemplo de la demo (35%): sin una lámina o quiz específico en la URL
+// (p. ej. en la vista general del curso), se muestra este punto como "actual".
+const DEFAULT_CURRENT_SLIDE_ID = 13;
 
 export default function CourseSidebar() {
   const navigate = useNavigate();
   const { slideId, quizId } = useParams();
-  const currentSlideId = parseInt(slideId || '0');
+  const currentSlideId = slideId ? parseInt(slideId) : quizId ? 0 : DEFAULT_CURRENT_SLIDE_ID;
+  const progress = useProgress();
+  const { isSlideRead, isQuizPassed } = progress;
+
+  const currentSection = COURSE_SECTIONS.find(
+    (s) => s.slides.includes(currentSlideId) || (!!quizId && s.quizId === quizId)
+  );
+
+  const [openSections, setOpenSections] = useState<Set<number>>(
+    () => new Set(currentSection ? [currentSection.id] : [])
+  );
+
+  // Keep the section you're actually reading expanded, without collapsing sections you opened manually.
+  useEffect(() => {
+    if (!currentSection) return;
+    setOpenSections((prev) => (prev.has(currentSection.id) ? prev : new Set(prev).add(currentSection.id)));
+  }, [currentSection?.id]);
+
+  const toggleSection = (id: number) => {
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   return (
     <aside className="w-full lg:w-80 bg-white border-r border-slate-200 sidebar-gradient flex flex-col h-full overflow-hidden">
@@ -30,12 +63,16 @@ export default function CourseSidebar() {
 
       <nav className="flex-1 overflow-y-auto custom-scrollbar pt-2">
         {COURSE_SECTIONS.map((section) => {
-          const isCurrentSection = section.slides.includes(currentSlideId) || quizId === section.quizId;
-          const isCompleted = section.id < 5 && !isCurrentSection; 
+          const isCurrentSection = section.slides.includes(currentSlideId) || (!!quizId && quizId === section.quizId);
+          const isOpen = openSections.has(section.id);
+          const isCompleted =
+            section.slides.every((sId) => isSlideRead(sId)) &&
+            (!section.quizId || isQuizPassed(section.quizId));
 
           return (
             <div key={section.id} className="mb-0">
-              <button 
+              <button
+                onClick={() => toggleSection(section.id)}
                 className={`w-full flex items-center justify-between px-4 py-3 bg-slate-100/50 hover:bg-slate-100 transition-colors text-left border-b border-slate-200 ${isCurrentSection ? 'bg-slate-100' : ''}`}
               >
                 <div className="flex-1 pr-2">
@@ -49,11 +86,11 @@ export default function CourseSidebar() {
                    ) : isCurrentSection ? (
                      <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold uppercase">En Progreso</span>
                    ) : null}
-                   <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform ${isCurrentSection ? 'rotate-180' : ''}`} />
+                   <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </div>
               </button>
-              
-              {isCurrentSection && (
+
+              {isOpen && (
                 <motion.div 
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
@@ -61,53 +98,81 @@ export default function CourseSidebar() {
                 >
                   {section.slides.map((sId) => {
                     const slide = SLIDES[sId];
-                    const status = sId < currentSlideId ? 'completed' : sId === currentSlideId ? 'current' : 'locked';
-                    
+                    const isRead = isSlideRead(sId);
+                    const isCurrent = sId === currentSlideId;
+                    const unlocked = isRead || isCurrent || isSlideUnlocked(sId, progress);
+
                     return (
-                      <button 
+                      <button
                         key={sId}
-                        onClick={() => navigate(`/slide/${sId}`)}
+                        onClick={() => unlocked && navigate(`/slide/${sId}`)}
+                        disabled={!unlocked}
+                        title={unlocked ? undefined : 'Completa el contenido y los quiz anteriores para desbloquear esta lámina'}
                         className={`w-full flex items-center gap-3 px-6 py-3 border-b border-slate-100 transition-all text-left ${
-                          sId === currentSlideId ? 'bg-blue-50/30' : 'hover:bg-slate-50'
-                        } ${status === 'locked' && sId > 13 ? 'opacity-60 grayscale' : ''}`}
+                          isCurrent ? 'bg-blue-50/30' : unlocked ? 'hover:bg-slate-50' : 'cursor-not-allowed'
+                        } ${!isRead && !isCurrent ? 'opacity-60 grayscale' : ''}`}
                       >
                         <div className="flex-shrink-0">
-                          {sId < currentSlideId || (sId < 13) ? <span className="text-xs">✅</span> : 
-                           sId === currentSlideId ? <span className="text-xs">▶️</span> : 
+                          {isRead ? <span className="text-xs">✅</span> :
+                           isCurrent ? <span className="text-xs">▶️</span> :
                            <span className="text-xs">🔒</span>}
                         </div>
                         <span className={`text-[12px] font-medium leading-snug flex-1 ${
-                          sId === currentSlideId ? 'text-brand-primary font-bold' : 'text-slate-500'
-                        } ${(sId < currentSlideId || (sId < 13)) ? 'text-green-600' : ''}`}>
+                          isCurrent ? 'text-brand-primary font-bold' : isRead ? 'text-green-600' : 'text-slate-500'
+                        }`}>
                           Lámina {sId}. {slide.title}
                         </span>
                       </button>
                     );
                   })}
-                  {section.quizId && (
-                    <button 
-                      onClick={() => navigate(`/quiz/${section.quizId}`)}
-                      className={`w-full flex items-center gap-3 px-6 py-3 border-b border-slate-100 transition-all text-left hover:bg-slate-50 ${quizId === section.quizId ? 'bg-blue-50/30' : ''}`}
-                    >
-                      <div className="flex-shrink-0">
-                         {quizId === section.quizId ? <span className="text-xs">▶️</span> : <span className="text-xs">🔒</span>}
-                      </div>
-                      <span className={`text-[12px] font-bold italic leading-snug flex-1 ${quizId === section.quizId ? 'text-brand-primary' : 'text-slate-500'}`}>
-                        Quiz: {section.title.split('. ')[1]}
-                      </span>
-                      <HelpCircle className="w-3.5 h-3.5 text-gray-400" />
-                    </button>
-                  )}
+                  {section.quizId && (() => {
+                    const passed = isQuizPassed(section.quizId);
+                    const unlocked = passed || quizId === section.quizId || isQuizUnlocked(section.quizId, progress);
+                    return (
+                      <button
+                        onClick={() => unlocked && navigate(`/quiz/${section.quizId}`)}
+                        disabled={!unlocked}
+                        title={unlocked ? undefined : 'Termina todas las láminas de esta sección para desbloquear el quiz'}
+                        className={`w-full flex items-center gap-3 px-6 py-3 border-b border-slate-100 transition-all text-left ${
+                          unlocked ? 'hover:bg-slate-50' : 'cursor-not-allowed opacity-60 grayscale'
+                        } ${quizId === section.quizId ? 'bg-blue-50/30' : ''}`}
+                      >
+                        <div className="flex-shrink-0">
+                           {passed ? <span className="text-xs">✅</span> :
+                            quizId === section.quizId ? <span className="text-xs">▶️</span> :
+                            <span className="text-xs">🔒</span>}
+                        </div>
+                        <span className={`text-[12px] font-bold italic leading-snug flex-1 ${
+                          quizId === section.quizId ? 'text-brand-primary' : passed ? 'text-green-600' : 'text-slate-500'
+                        }`}>
+                          {MODULE_QUIZZES[section.quizId].title.split(' — ')[0]}
+                        </span>
+                        <HelpCircle className="w-3.5 h-3.5 text-gray-400" />
+                      </button>
+                    );
+                  })()}
                 </motion.div>
               )}
             </div>
           );
         })}
-        
-        <div className="px-4 py-3 bg-slate-50 flex items-center justify-between border-b border-slate-200 opacity-50">
-          <span className="text-[11px] font-bold text-slate-500 uppercase font-bold">Evaluación Final</span>
-          <span className="text-xs">🔒</span>
-        </div>
+
+        {(() => {
+          const unlocked = isFinalExamUnlocked(progress);
+          return (
+            <button
+              onClick={() => unlocked && navigate('/final-exam')}
+              disabled={!unlocked}
+              title={unlocked ? undefined : 'Aprueba los 4 quiz de módulo para desbloquear la evaluación final'}
+              className={`w-full px-4 py-3 bg-slate-50 flex items-center justify-between border-b border-slate-200 text-left ${
+                unlocked ? 'hover:bg-slate-100' : 'opacity-50 cursor-not-allowed'
+              }`}
+            >
+              <span className="text-[11px] font-bold text-slate-500 uppercase">Evaluación Final</span>
+              <span className="text-xs">{unlocked ? '▶️' : '🔒'}</span>
+            </button>
+          );
+        })()}
       </nav>
     </aside>
   );

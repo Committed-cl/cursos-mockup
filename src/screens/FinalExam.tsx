@@ -1,25 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { Award, AlertCircle, PlayCircle, ArrowRight, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Award, AlertCircle, PlayCircle, ArrowRight, Clock, ShieldCheck, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { FINAL_EXAM_QUESTIONS, FINAL_EXAM_PASS_COUNT } from '../data/quizData';
+import { useProgress } from '../lib/progress';
+import { isFinalExamUnlocked, firstIncompleteRoute } from '../lib/courseFlow';
 
 export default function FinalExam() {
   const navigate = useNavigate();
-  const [view, setView] = useState<'intro' | 'exam'>('intro');
+  const progress = useProgress();
+  const [view, setView] = useState<'intro' | 'exam' | 'result'>('intro');
   const [qIndex, setQIndex] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
 
-  const mockQuestions = [
-    {
-      q: "¿Cuál es la presión máxima de operación permitida para el uso de soldadura fuerte en redes de gas natural de baja presión?",
-      options: ["2 bar", "5 bar", "10 bar", "15 bar"]
-    },
-    {
-      q: "Durante el calentamiento, ¿qué indica que la unión está lista para recibir el material de aporte?",
-      options: ["El tubo cambia a color blanco", "El decapante se vuelve transparente y fluye", "El soplete emite un sonido agudo", "El tubo desprende chispas"]
+  const questions = FINAL_EXAM_QUESTIONS;
+  const currentQuestion = questions[qIndex];
+  const selectedOptionId = answers[currentQuestion.id] ?? null;
+
+  const score = questions.reduce((acc, q) => {
+    const correctOption = q.options.find((o) => o.isCorrect);
+    return acc + (answers[q.id] === correctOption?.id ? 1 : 0);
+  }, 0);
+  const passed = score >= FINAL_EXAM_PASS_COUNT;
+
+  // No se pueden saltar los quiz: sin los 4 módulos aprobados, no hay evaluación final.
+  useEffect(() => {
+    if (!isFinalExamUnlocked(progress)) {
+      navigate(firstIncompleteRoute(progress), { replace: true });
     }
-  ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
@@ -44,7 +55,7 @@ export default function FinalExam() {
                         <Award className="w-12 h-12 text-white" />
                      </div>
                      <h1 className="text-3xl font-bold uppercase tracking-tight">Evaluación Final</h1>
-                     <p className="text-white/70 mt-2 font-medium">Procedimiento PRC-MG-026 v.43</p>
+                     <p className="text-white/70 mt-2 font-medium">Procedimiento PRC-MG-026 v.4</p>
                    </div>
                 </div>
 
@@ -103,8 +114,8 @@ export default function FinalExam() {
                    </div>
                 </div>
               </motion.div>
-            ) : (
-              <motion.div 
+            ) : view === 'exam' ? (
+              <motion.div
                 key="exam"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -118,7 +129,7 @@ export default function FinalExam() {
                         </div>
                         <div>
                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Evaluación Final</p>
-                           <p className="text-sm font-bold text-white uppercase tracking-tighter">PRC-MG-026 v.43</p>
+                           <p className="text-sm font-bold text-white uppercase tracking-tighter">PRC-MG-026 v.4</p>
                         </div>
                      </div>
                      <div className="flex items-center gap-8">
@@ -151,28 +162,28 @@ export default function FinalExam() {
                        className="space-y-8"
                      >
                         <h2 className="text-2xl font-bold text-brand-primary leading-tight">
-                           {mockQuestions[qIndex % 2].q}
+                           {currentQuestion.text}
                         </h2>
 
                         <div className="grid grid-cols-1 gap-4">
-                           {mockQuestions[qIndex % 2].options.map((opt, i) => (
-                             <button 
-                               key={i}
-                               onClick={() => setSelected(opt)}
+                           {currentQuestion.options.map((opt, i) => (
+                             <button
+                               key={opt.id}
+                               onClick={() => setAnswers(prev => ({ ...prev, [currentQuestion.id]: opt.id }))}
                                className={`w-full text-left p-6 rounded-2xl border-2 transition-all group ${
-                                 selected === opt 
-                                  ? 'border-brand-primary bg-blue-50/50 shadow-md ring-1 ring-brand-primary/20' 
+                                 selectedOptionId === opt.id
+                                  ? 'border-brand-primary bg-blue-50/50 shadow-md ring-1 ring-brand-primary/20'
                                   : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50'
                                }`}
                              >
                                <div className="flex items-center gap-4">
                                   <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-colors ${
-                                    selected === opt ? 'bg-brand-primary border-brand-primary text-white' : 'border-gray-200 text-gray-300 group-hover:border-gray-300'
+                                    selectedOptionId === opt.id ? 'bg-brand-primary border-brand-primary text-white' : 'border-gray-200 text-gray-300 group-hover:border-gray-300'
                                   }`}>
                                      {String.fromCharCode(65 + i)}
                                   </div>
-                                  <span className={`text-lg font-medium ${selected === opt ? 'text-brand-primary font-bold' : 'text-gray-600'}`}>
-                                    {opt}
+                                  <span className={`text-lg font-medium ${selectedOptionId === opt.id ? 'text-brand-primary font-bold' : 'text-gray-600'}`}>
+                                    {opt.text}{opt.isCorrect && ' *'}
                                   </span>
                                </div>
                              </button>
@@ -182,26 +193,86 @@ export default function FinalExam() {
 
                      <div className="flex justify-between items-center pt-8 border-t border-gray-100">
                         <p className="text-xs text-gray-400 font-medium italic">Respuesta guardada automáticamente al avanzar.</p>
-                        <button 
+                        <button
                           onClick={() => {
-                            if (qIndex < 9) {
+                            if (qIndex < questions.length - 1) {
                               setQIndex(qIndex + 1);
-                              setSelected(null);
                             } else {
-                              navigate('/result');
+                              setView('result');
                             }
                           }}
-                          disabled={!selected}
+                          disabled={!selectedOptionId}
                           className={`px-12 py-4 rounded-xl font-bold text-sm transition-all flex items-center gap-3 ${
-                            selected 
-                              ? 'bg-brand-primary text-white hover:bg-[#152e4a] shadow-lg shadow-brand-primary/20' 
+                            selectedOptionId
+                              ? 'bg-brand-primary text-white hover:bg-[#152e4a] shadow-lg shadow-brand-primary/20'
                               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                           }`}
                         >
-                           {qIndex === 9 ? 'Finalizar Evaluación' : 'Siguiente Pregunta'} <ArrowRight className="w-5 h-5" />
+                           {qIndex === questions.length - 1 ? 'Finalizar Evaluación' : 'Siguiente Pregunta'} <ArrowRight className="w-5 h-5" />
                         </button>
                      </div>
                   </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-xl"
+              >
+                <div className={`p-12 text-center text-white ${passed ? 'bg-brand-success' : 'bg-brand-error'}`}>
+                  <div className="flex justify-center mb-6">
+                     <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md">
+                        {passed ? <CheckCircle2 className="w-16 h-16 text-white" /> : <XCircle className="w-16 h-16 text-white" />}
+                     </div>
+                  </div>
+                  <h2 className="text-3xl font-bold mb-2 uppercase tracking-tight">
+                    {passed ? 'Evaluación Aprobada' : 'Evaluación Reprobada'}
+                  </h2>
+                  <p className="text-white/80 font-medium">
+                    Obtuviste {score} de {questions.length} respuestas correctas ({Math.round((score / questions.length) * 100)}%) · Mínimo para aprobar: {FINAL_EXAM_PASS_COUNT} de {questions.length} (70%)
+                  </p>
+                </div>
+
+                <div className="p-8 lg:p-12 space-y-8">
+                  {passed ? (
+                    <div className="flex flex-col items-center gap-6 text-center">
+                      <p className="text-gray-600 font-medium max-w-md">
+                        Tu certificado de calificación técnica se generará a continuación.
+                      </p>
+                      <button
+                        onClick={() => navigate('/result', { state: { score, total: questions.length } })}
+                        className="bg-brand-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-[#152e4a] transition-all shadow-lg flex items-center justify-center gap-2"
+                      >
+                        Ver mi Certificado <ArrowRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-6 text-center">
+                      <p className="text-gray-600 font-medium max-w-md">
+                        No alcanzaste la nota mínima. Repasa el contenido de las láminas con las que tuviste dudas y vuelve a intentarlo.
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <button
+                          onClick={() => {
+                            setAnswers({});
+                            setQIndex(0);
+                            setView('exam');
+                          }}
+                          className="border-2 border-brand-primary text-brand-primary font-bold py-4 px-8 rounded-xl hover:bg-blue-50 transition-all flex items-center justify-center gap-2"
+                        >
+                          Reintentar Evaluación <RotateCcw className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => navigate('/course')}
+                          className="bg-gray-100 text-gray-600 font-bold py-4 px-8 rounded-xl hover:bg-gray-200 transition-all"
+                        >
+                          Revisar Contenidos
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

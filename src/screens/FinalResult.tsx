@@ -1,10 +1,28 @@
+import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { Award, Download, ArrowLeft, CheckCircle2, QrCode, ShieldCheck, Printer } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
+
+interface ResultState {
+  score: number;
+  total: number;
+}
 
 export default function FinalResult() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as ResultState | null;
+
+  // Esta pantalla solo tiene sentido justo después de aprobar la evaluación final.
+  useEffect(() => {
+    if (!state) navigate('/course', { replace: true });
+  }, [state, navigate]);
+
+  if (!state) return null;
+
+  const { score, total } = state;
+  const pct = Math.round((score / total) * 100);
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg">
@@ -45,8 +63,8 @@ export default function FinalResult() {
               <div className="grid grid-cols-1 md:grid-cols-3 border-b border-gray-100">
                  <div className="p-8 text-center border-r border-gray-100">
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Resultado Final</p>
-                    <p className="text-3xl font-black text-brand-success">90%</p>
-                    <p className="text-xs text-gray-500 font-medium mt-1">9 de 10 correctas</p>
+                    <p className="text-3xl font-black text-brand-success">{pct}%</p>
+                    <p className="text-xs text-gray-500 font-medium mt-1">{score} de {total} correctas</p>
                  </div>
                  <div className="p-8 text-center border-r border-gray-100 bg-gray-50/50">
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Nota de Aprobación</p>
@@ -102,7 +120,7 @@ export default function FinalResult() {
                              "Procedimiento de Soldadura Fuerte de Tuberías de Cobre"
                           </h4>
                           <p className="text-brand-secondary text-xs font-bold uppercase tracking-widest">
-                             PRC-MG-026 v.43 - Código de Actividad: MG-402
+                             PRC-MG-026 v.4 - Código de Actividad: MG-402
                           </p>
                        </div>
 

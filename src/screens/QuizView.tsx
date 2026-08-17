@@ -1,50 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import CourseSidebar from '../components/CourseSidebar';
 import { CheckCircle2, XCircle, HelpCircle, ArrowRight, RotateCcw } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-
-const questions = [
-  {
-    id: 1,
-    text: "¿Cuál de los siguientes NO es un EPP exigido para la actividad de soldadura fuerte?",
-    options: [
-      { id: 'a', text: "Guantes de cuero de puño largo" },
-      { id: 'b', text: "Anteojos oscuros filtrantes" },
-      { id: 'c', text: "Guantes de látex desechables", isCorrect: true },
-      { id: 'd', text: "Botín o bota de seguridad" }
-    ],
-    feedback: "Los guantes de látex no ofrecen protección térmica ni mecánica contra salpicaduras de metal fundido. Se requieren obligatoriamente guantes de cuero de puño largo."
-  },
-  {
-    id: 2,
-    text: "Antes de encender el soplete, ¿qué debe verificarse primero?",
-    options: [
-      { id: 'a', text: "Que el material de aporte esté listo" },
-      { id: 'b', text: "Que el entorno tolera térmica y operacionalmente la actividad", isCorrect: true },
-      { id: 'c', text: "Que el tubo esté cortado a medida" },
-      { id: 'd', text: "Que el decapante esté aplicado" }
-    ],
-    feedback: "La seguridad es primaria. El entorno debe ser validado antes de generar cualquier llama abierta."
-  },
-  {
-    id: 3,
-    text: "¿Verdadero o Falso? En espacios confinados sin ventilación adecuada, el soldador debe usar máscara de aire independiente del medio ambiente.",
-    options: [
-      { id: 'a', text: "Verdadero", isCorrect: true },
-      { id: 'b', text: "Falso" }
-    ],
-    feedback: "Correcto. El riesgo de asfixia o intoxicación por humos de soldadura es crítico en espacios confinados."
-  }
-];
+import { MODULE_QUIZZES } from '../data/quizData';
+import { COURSE_SECTIONS } from '../data/courseContent';
+import { useProgress, markQuizPassed } from '../lib/progress';
+import { isQuizUnlocked, firstIncompleteRoute } from '../lib/courseFlow';
 
 export default function QuizView() {
   const navigate = useNavigate();
   const { quizId } = useParams();
-  
-  const sectionNum = quizId?.split('-')[1] || '5';
-  
+  const progress = useProgress();
+
+  const quiz = MODULE_QUIZZES[quizId || 'module-1'];
+  const questions = quiz.questions;
+
+  const sectionIndex = COURSE_SECTIONS.findIndex((s) => s.quizId === quizId);
+  const nextSection = sectionIndex >= 0 ? COURSE_SECTIONS[sectionIndex + 1] : undefined;
+  const nextSlideId = nextSection?.slides[0];
+
+  // No se pueden saltar los quiz: si aún falta contenido previo, manda al punto real de avance.
+  useEffect(() => {
+    if (quizId && !isQuizUnlocked(quizId, progress)) {
+      navigate(firstIncompleteRoute(progress), { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizId]);
+
   const [currentStep, setCurrentStep] = useState<'quiz' | 'result'>('quiz');
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -54,21 +38,22 @@ export default function QuizView() {
     setAnswers(prev => ({ ...prev, [qId]: oId }));
   };
 
-  const handleFinish = () => {
-    setSubmitted(true);
-    setCurrentStep('result');
-  };
-
   const score = questions.reduce((acc, q) => {
     const correctOption = q.options.find(o => o.isCorrect);
     return acc + (answers[q.id] === correctOption?.id ? 1 : 0);
   }, 0);
 
-  const passed = score >= 2;
+  const passed = score >= quiz.passCount;
+
+  const handleFinish = () => {
+    setSubmitted(true);
+    setCurrentStep('result');
+    if (passed && quizId) markQuizPassed(quizId);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg text-slate-800">
-      <Layout breadcrumb={`Soldadura Fuerte > Sección ${sectionNum} > Quiz de Evaluación`}>
+      <Layout breadcrumb={`Soldadura Fuerte > ${quiz.title.split(' — ')[0]} > Quiz de Evaluación`}>
         <div className="flex gap-8">
           <div className="lg:w-80 flex-shrink-0 hidden lg:block border rounded-xl overflow-hidden h-fit bg-white self-start sticky top-24">
             <CourseSidebar />
@@ -90,8 +75,8 @@ export default function QuizView() {
                           <HelpCircle className="w-6 h-6" />
                        </div>
                        <div>
-                          <h1 className="text-xl font-bold text-brand-primary">Evaluación: Sección {sectionNum}</h1>
-                          <p className="text-[10px] text-brand-secondary font-bold uppercase tracking-widest">Validación de conocimientos técnicos</p>
+                          <h1 className="text-xl font-bold text-brand-primary">{quiz.title}</h1>
+                          <p className="text-[10px] text-brand-secondary font-bold uppercase tracking-widest">{quiz.sectionsLabel} · Mínimo {quiz.passCount} de {questions.length} para aprobar</p>
                        </div>
                     </div>
 
@@ -120,7 +105,7 @@ export default function QuizView() {
                                       {answers[q.id] === opt.id && <div className="w-2.5 h-2.5 bg-brand-primary rounded-full"></div>}
                                    </div>
                                    <span className={`text-sm font-medium ${answers[q.id] === opt.id ? 'text-brand-primary font-bold' : 'text-gray-600'}`}>
-                                     {opt.text}
+                                     {opt.text}{opt.isCorrect && ' *'}
                                    </span>
                                 </div>
                               </button>
@@ -202,11 +187,11 @@ export default function QuizView() {
 
                     <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
                       {passed ? (
-                        <button 
-                          onClick={() => navigate('/final-exam')}
+                        <button
+                          onClick={() => navigate(nextSlideId ? `/slide/${nextSlideId}` : '/course')}
                           className="flex-1 bg-brand-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-[#152e4a] transition-all shadow-lg flex items-center justify-center gap-2"
                         >
-                          Continuar a la Evaluación Final <ArrowRight className="w-5 h-5" />
+                          Continuar al Curso <ArrowRight className="w-5 h-5" />
                         </button>
                       ) : (
                         <button 

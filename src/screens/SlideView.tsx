@@ -1,23 +1,41 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import CourseSidebar from '../components/CourseSidebar';
-import { ChevronLeft, ChevronRight, AlertTriangle, CheckSquare } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Lightbulb, CheckSquare } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { SLIDES } from '../data/courseContent';
+import { useProgress, markSlideRead } from '../lib/progress';
+import { isSlideUnlocked, firstIncompleteRoute, nextRouteAfterSlide } from '../lib/courseFlow';
 
 export default function SlideView() {
   const navigate = useNavigate();
   const { slideId } = useParams();
   const sId = parseInt(slideId || '1');
   const slide = SLIDES[sId];
-  
-  const [read, setRead] = useState(false);
+  const progress = useProgress();
+  const { isSlideRead } = progress;
 
+  const nextRoute = nextRouteAfterSlide(sId);
+  const nextIsQuiz = nextRoute?.startsWith('/quiz/');
+  const nextIsFinalExam = nextRoute === '/final-exam';
+
+  // React Router reuses this component across "/slide/:slideId" navigations
+  // (no remount), so `read` can't be plain per-slide state — it would carry
+  // over the previous lámina's value for a render before any effect could
+  // correct it. Track only "did I just confirm THIS slide" and derive the
+  // rest straight from the progress store, which is always in sync with sId.
+  const [locallyConfirmedSlideId, setLocallyConfirmedSlideId] = useState<number | null>(null);
+  const read = isSlideRead(sId) || locallyConfirmedSlideId === sId;
+
+  // No se pueden saltar los quiz: si esta lámina todavía no está desbloqueada
+  // (falta contenido o un quiz anterior por aprobar), manda al punto real de avance.
   useEffect(() => {
-    setRead(false);
-    window.scrollTo(0, 0);
-  }, [slideId]);
+    if (slide && !isSlideUnlocked(sId, progress)) {
+      navigate(firstIncompleteRoute(progress), { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sId]);
 
   if (!slide) {
     return (
@@ -32,12 +50,7 @@ export default function SlideView() {
 
   const handleNext = () => {
     if (!read) return;
-    const nextId = sId + 1;
-    if (SLIDES[nextId]) {
-      navigate(`/slide/${nextId}`);
-    } else {
-      navigate('/course');
-    }
+    navigate(nextRoute ?? '/course');
   };
 
   const handlePrev = () => {
@@ -73,9 +86,9 @@ export default function SlideView() {
                     <h2 className="text-3xl font-bold text-slate-800 tracking-tight leading-tight">{slide.title}</h2>
                  </div>
                  <div className="text-right hidden sm:block">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Lámina {sId} de 43</p>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Lámina {sId} de 42</p>
                     <div className="w-24 h-1.5 bg-slate-100 rounded-full mt-2 overflow-hidden">
-                       <div className="h-full bg-brand-progress" style={{ width: `${(sId / 43) * 100}%` }}></div>
+                       <div className="h-full bg-brand-progress" style={{ width: `${(sId / 42) * 100}%` }}></div>
                     </div>
                  </div>
               </div>
@@ -101,15 +114,15 @@ export default function SlideView() {
                     ))}
                  </div>
 
-                 {slide.important && (
+                 {slide.ideaClave && (
                    <div className="mt-8 bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r shadow-sm">
                       <div className="flex items-center mb-1">
                          <span className="text-amber-600 mr-2 font-bold flex items-center gap-2 uppercase tracking-widest text-sm">
-                            <AlertTriangle className="w-4 h-4" /> ⚠️ IMPORTANTE:
+                            <Lightbulb className="w-4 h-4" /> Idea clave:
                          </span>
                       </div>
                       <p className="text-sm text-amber-800 leading-snug font-medium m-0">
-                         {slide.important}
+                         {slide.ideaClave}
                       </p>
                    </div>
                  )}
@@ -129,25 +142,32 @@ export default function SlideView() {
                        <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${read ? 'bg-brand-success border-brand-success' : 'border-gray-300 group-hover:border-brand-primary'}`}>
                           {read && <CheckSquare className="w-4 h-4 text-white" />}
                        </div>
-                       <input 
-                         type="checkbox" 
-                         className="hidden" 
-                         checked={read} 
-                         onChange={() => setRead(!read)}
+                       <input
+                         type="checkbox"
+                         className="hidden"
+                         checked={read}
+                         onChange={() => {
+                           // Es una declaración ("ya leí esto"), no un interruptor:
+                           // una vez marcada, no tiene sentido "desmarcarla" con otro clic.
+                           if (read) return;
+                           setLocallyConfirmedSlideId(sId);
+                           markSlideRead(sId);
+                         }}
                        />
                        <span className={`text-sm font-bold ${read ? 'text-brand-success' : 'text-gray-500'}`}>He leído y comprendido esta lámina</span>
                     </label>
                  </div>
 
-                 <button 
+                 <button
                    onClick={handleNext}
+                   disabled={!read}
                    className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all order-3 ${
-                     read 
-                      ? 'bg-brand-primary text-white hover:bg-[#152e4a] shadow-lg shadow-brand-primary/10' 
+                     read
+                      ? 'bg-brand-primary text-white hover:bg-[#152e4a] shadow-lg shadow-brand-primary/10'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                    }`}
                  >
-                    Siguiente <ChevronRight className="w-5 h-5" />
+                    {nextIsQuiz ? 'Ir al Quiz' : nextIsFinalExam ? 'Ir a la Evaluación Final' : 'Siguiente'} <ChevronRight className="w-5 h-5" />
                  </button>
               </div>
             </motion.div>
